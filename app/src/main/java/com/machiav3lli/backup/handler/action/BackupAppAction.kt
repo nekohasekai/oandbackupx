@@ -213,11 +213,13 @@ open class BackupAppAction(context: Context, shell: ShellHandler) : BaseAppActio
                     sourceDirectory,
                     false,
                     null
-            )
+            ).filter { it.filename != "no_backup" }
+
             // Excludes cache and libs, when we don't want to backup'em
-            if (getDefaultSharedPreferences(context).getBoolean(Constants.PREFS_EXCLUDECACHE, true)) {
+            val skipCache = getDefaultSharedPreferences(context).getBoolean(Constants.PREFS_EXCLUDECACHE, true);
+            if (skipCache) {
                 dirsInSource = dirsInSource
-                        .filter { dir: ShellHandler.FileInfo -> !DATA_EXCLUDED_DIRS.contains(dir.filename) }
+                        .filterNot { it.filename.startsWith("app_") || DATA_EXCLUDED_DIRS.contains(it.filename) }
                         .toList()
             }
 
@@ -230,9 +232,11 @@ open class BackupAppAction(context: Context, shell: ShellHandler) : BaseAppActio
                 allFilesToBackup.add(dir)
                 // Do not process files in the "root" directory of the app's data
                 if (dir.fileType === ShellHandler.FileInfo.FileType.DIRECTORY) try {
-                    allFilesToBackup.addAll(
-                            shell.suGetDetailedDirectoryContents(dir.absolutePath, true, dir.filename)
-                    )
+                    var filesToBackup = shell.suGetDetailedDirectoryContents(dir.absolutePath, true, dir.filename)
+                    if (skipCache && dir.filename == "shared_prefs") {
+                        filesToBackup = filesToBackup.filterNot { it.filename.toLowerCase().contains("(google|firebase)".toRegex()) }
+                    }
+                    allFilesToBackup.addAll(filesToBackup)
                 } catch (e: ShellCommandFailedException) {
                     if (isFileNotFoundException(e)) {
                         Log.w(TAG, "Directory has been deleted during processing: $dir")
