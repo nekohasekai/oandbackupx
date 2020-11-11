@@ -144,7 +144,7 @@ class AppInfoX {
         val propertiesFileName = String.format(BackupProperties.BACKUP_INSTANCE_PROPERTIES,
                 Constants.BACKUP_DATE_TIME_FORMATTER.format(backupItem.backupProperties.backupDate), backupItem.backupProperties.profileId)
         deleteRecursive(context, backupItem.backupLocation)
-        StorageFile.fromUri(context, backupDir!!).findFile(propertiesFileName)!!.delete()
+        StorageFile.fromUri(context, backupDir!!).findFile(propertiesFileName)?.delete()
         if (directBoolean) backupHistory.remove(backupItem)
     }
 
