@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="backup">Sauvegarder</string>
+    <string name="backup">Sauvegarde</string>
     <string name="restore">restaurer</string>
-    <string name="backupConfirmation">Sauvegarder \?</string>
-    <string name="restoreConfirmation">Restaurer \?</string>
+    <string name="backupConfirmation">Sauvegarder \?</string>
+    <string name="restoreConfirmation">Restaurer \?</string>
     <string name="handleApk">APK</string>
-    <string name="handleData">données</string>
+    <string name="handleData">Données</string>
     <string name="handleBoth">les deux</string>
     <string name="radio_apk">APK</string>
-    <string name="radio_data">données</string>
+    <string name="radio_data">Données</string>
     <string name="radio_both">APK et données</string>
     <string name="de_selectAll">tout dé/sélectionner</string>
-    <string name="onlyApkBackedUp">Uniquement l\'APK</string>
-    <string name="onlyDataBackedUp">Uniquement les données</string>
     <string name="refresh">Rafraîchir</string>
     <string name="batchbackup">sauvegarder par lot</string>
     <string name="batchrestore">restaurer par lot</string>
@@ -28,7 +26,7 @@
     <string name="showNotInstalled">ne montrer que les applications non installées</string>
     <string name="showNewAndUpdated">ne montrer que les applications nouvelles et mises à jour</string>
     <string name="showOldBackups">montrer les anciennes sauvegardes</string>
-    <string name="showOnlyApkBackedUp">montrer les applications dont seul l\'apk est sauvegardé</string>
+    <string name="showOnlyApkBackedUp">montrer les applications dont seul l\'APK est sauvegardé</string>
     <string name="showOnlyDataBackedUp">montrer les applications dont seules les données sont sauvegardées</string>
     <string name="sortByLabel">trier par libellé</string>
     <string name="sortByPackageName">trier par nom de paquet</string>
@@ -40,10 +38,8 @@
     <string name="dialogYes">oui</string>
     <string name="dialogNo">non</string>
     <string name="restoreDataWithoutApkError">impossible de restaurer les données sans restaurer l\'APK car l\'application n\'est pas installée.</string>
-    <string name="collectingData">collecte des informations des paquets…</string>
     <string name="utilboxCheck">vérification de le présence de busybox/toybox…</string>
     <string name="noSu">impossible d\'acquérir les droits de super-utilisateur</string>
-    <string name="busyboxProblem">Impossible de trouver BusyBox. Référez-vous au journal des erreurs</string>
     <!--mkfileError: an error occured while creating a file. format: string + " " + filename-->
     <string name="mkfileError">Impossible de créer</string>
     <!--fallbackToDefault: indicates a fallback to the default for creation of a specific file. used in the same way as mkfileError-->
@@ -63,52 +59,48 @@
     <string name="uninstallFailure">Erreur lors de la désinstallation</string>
     <string name="errorDialogTitle">Présence d\'erreurs</string>
     <string name="customListTitle">Liste personnalisée</string>
-    <string name="prefs_quickreboot">Redémarrage rapide</string>
-    <string name="quickRebootMessage">Voulez-vous redémarrer l\'environnement utilisateur \?</string>
-    <string name="notInstalledModeDataWarning">l\'application ne peut être restaurer sans apk</string>
+    <string name="notInstalledModeDataWarning">L\'application ne peut être restaurée sans APK</string>
     <string name="shareTitle">partager</string>
     <string name="prefs_tools">Outils</string>
-    <string name="prefs_batchdelete">Effacer les sauvegardes \?</string>
+    <string name="prefs_batchdelete">Effacer les sauvegardes \?</string>
     <string name="batchDeleteMessage">Effacement des sauvegardes…</string>
     <string name="batchDeleteNotificationTitle">effacer les sauvegardes</string>
     <!--tools_backupsDeleted: shown in a notification followed by the number of backups deleted-->
     <string name="batchDeleteBackupsDeleted">sauvegardes effacées :</string>
     <string name="batchDeleteNothingToDelete">aucune sauvegarde à effacer</string>
-    <string name="enablePackage">Activer</string>
+    <string name="enablePackage">Activer l\'application</string>
     <!--enablePackageTitle: title for a list of checkable users-->
-    <string name="enablePackageTitle">Activer pour les utilisateurs</string>
-    <string name="disablePackage">Désactiver</string>
-    <string name="disablePackageTitle">Désactiver pour les utilisateurs</string>
-    <string name="prefs_title">Paramètres</string>
+    <string name="enablePackageTitle">Activer l\'application pour les utilisateurs</string>
+    <string name="disablePackage">Désactiver l\'application</string>
+    <string name="disablePackageTitle">Désactiver l\'application pour les utilisateurs</string>
+    <string name="prefs_title">Préférence</string>
     <string name="prefs_acquirewakelock">Empêcher la mise en veille</string>
-    <string name="prefs_acquirewakelock_summary">Acquérir un wakelock pendant les opérations par lot pour empêcher la mise en veille. Cela accélèrera les sauvegardes et restauration au prix d\'une plus grande consommation énergétique.</string>
+    <string name="prefs_acquirewakelock_summary">Verrouiller l\'éveil pendant les opérations par lot empêche la mise en veille. Accélère considérablement les sauvegardes et les restaurations, mais consomme plus d\'énergie.</string>
     <string name="prefs_pathbackupfolder">Dossier de sauvegarde</string>
-    <string name="prefs_oldbackups">Filtrer les sauvegarde par ancienneté</string>
+    <string name="prefs_oldbackups">Filtrer les sauvegardes par ancienneté</string>
     <!--prefs_summaryOldBackups: the quoted filter title is @string/showOldBackups-->
-    <string name="prefs_oldbackups_summary">Filtrer les sauvegardes plus anciennes que la valeur en jours. utilisé par le filtrage par ancienneté.</string>
+    <string name="prefs_oldbackups_summary">Filtrer les sauvegardes plus anciennes que le nombre de jours. Utilisé avec le filtre \'Afficher les anciennes sauvegardes\'.</string>
     <string name="prefs_copyselfapk">Copier son propre APK</string>
-    <string name="prefs_copyselfapk_summary">Placez une copie de OAndBackupX dans le niveau supérieur du dossier de sauvegarde lors de la sauvegarde</string>
+    <string name="prefs_copyselfapk_summary">Placez une copie de OAndBackupX à la racine du dossier de sauvegarde lors de la sauvegarde</string>
     <string name="prefs_languages">Langue</string>
-    <string name="prefs_language_system">Selon le système</string>
+    <string name="prefs_language_system">Système par défaut</string>
     <string name="prefs_rememberfiltering">Enregistrer les critères de tri et les filtres</string>
     <string name="prefs_rememberfiltering_summary">Sauvegarde les méthodes de tri et de filtrage sélectionnées. seules celles qui sont marquées dans le menu sont prises en compte.</string>
     <string name="sched_title">planification</string>
     <string name="sched_notificationMessage">sauvegarde planifiée</string>
     <string name="sched_interval">intervalle en jours :</string>
-    <string name="sched_hourOfDay">Heure de la journée :</string>
+    <string name="sched_hourOfDay">Heure du jour :</string>
     <string name="sched_checkbox">activer</string>
     <string name="sched_startingbackup">lancement de la sauvegarde planifiée…</string>
     <string name="sched_mode">mode de sauvegarde :</string>
-    <string name="sched_timeLeft">heures restantes jusqu\'à la prochaine sauvegarde :</string>
-    <string name="sched_customListUpdateButton">mettre à jour la liste personnalisée</string>
+    <string name="sched_timeLeft">Temps restant :</string>
     <string name="sched_excludeSystemCheckBox">exclure les applications systèmes</string>
     <!--filebrowser_createDirectoryError: an error occured while trying to create the directory. format: string + " " + directory name-->
     <string name="apptype_special">Sauvegarde spéciale</string>
     <string name="sched_add">Ajouter une sauvegarde planifiée</string>
     <string name="sort_and_filter">Trier et filtrer</string>
-    <string name="enable_encryption_message">Il n\'est pas sûr de garder vos données sur votre appareil non chiffrées. Pour la sécurité de vos données, activez le chiffrement et définissez un mot de passe.</string>
-    <string name="enable_encryption_title">Chiffrement des données</string>
-    <string name="help_group">Notre groupe</string>
+    <string name="enable_encryption_message">Ce n\'est pas sûr de garder vos données sur votre appareil non crypées. Pour la sécurité de vos données, activez le cryptage et définissez un mot de passe.</string>
+    <string name="enable_encryption_title">Cryptage des données</string>
     <string name="help_license">Licence</string>
     <string name="cache_size">Taille du cache :</string>
     <string name="data_size">Taille des données :</string>
@@ -123,7 +115,7 @@
     <string name="ignore_battery_optimization_title">Optimisation de batterie</string>
     <string name="dialog_approve">Allons-y !</string>
     <string name="dialog_refuse">Je ne veux pas</string>
-    <string name="empty_filtered_list">La liste filtrée est vide, ce qui remet les filtres par défaut</string>
+    <string name="empty_filtered_list">La liste filtrée est vide.</string>
     <string name="deleted_backup">Sauvegarde supprimée</string>
     <string name="other_filters_options">Filtres spéciaux :</string>
     <string name="encrypted_data_title">Données chiffrées :</string>
@@ -154,23 +146,21 @@
     <string name="spec_bluetooth">Bluetooth</string>
     <string name="spec_appwidgets">Widgets d\'applications</string>
     <string name="spec_accounts">Comptes</string>
-    <string name="sched_blacklist">Liste noire</string>
-    <string name="sched_submode">Sous-mode de sauvegarde :</string>
-    <string name="sched_activateButton">Démarrer la sauvegarde maintenant</string>
+    <string name="sched_blocklist">Liste noire</string>
+    <string name="sched_activateButton">Démarrer maintenant</string>
     <string name="prefs_logviewer">Afficher le journal</string>
     <string name="prefs_batchdelete_summary">Supprimez les sauvegardes de toutes les applications qui ne sont pas actuellement installées.</string>
-    <string name="prefs_quickreboot_summary">Tue le processus system_server pour forcer un redémarrage de l’espace utilisateur</string>
-    <string name="prefs_enableSpecialBackups">Activer les sauvegardes spéciales</string>
+    <string name="prefs_enablespecial">Activer les sauvegardes spéciales</string>
     <string name="prefs_deviceprotecteddata_summary">Sauvegarde et restaure les données placées dans data/user_de</string>
     <string name="prefs_deviceprotecteddata">Sauvegarder les données protégées par l\'appareil</string>
     <string name="prefs_externaldata_summary">Sauvegarde et restauration des données placées sur le stockage externe (par exemple /storage/emulated/0/Android/data/)</string>
     <string name="prefs_externaldata">Sauvegarder les données externes</string>
     <string name="prefs_excludecache_summary">Exclure le cache de l\'application de la sauvegarde des données</string>
     <string name="prefs_excludecache">Exclure le cache de l’application</string>
-    <string name="prefs_password_summary">Laisser vide pour désactiver le chiffrement</string>
-    <string name="prefs_password">Mot de passe de chiffrement</string>
-    <string name="prefs_encryption_summary">Activer le chiffrement des sauvegardes de données</string>
-    <string name="prefs_encryption">Chiffrement</string>
+    <string name="prefs_password_summary">Laisser vide pour désactiver le cryptage</string>
+    <string name="prefs_password">Mot de passe de cryptage</string>
+    <string name="prefs_encryption_summary">Activer le cryptage des sauvegardes de données</string>
+    <string name="prefs_encryption">Cryptage</string>
     <string name="prefs_service">Préférences de service</string>
     <string name="prefs_biometriclock_summary">Sécuriser l’application avec le verrouillage biométrique de l’appareil (p. ex. empreintes digitales, reconnaissance faciale)</string>
     <string name="prefs_biometriclock">Verrouillage biométrique</string>
@@ -185,33 +175,33 @@
     <string name="radio_system">Applis système</string>
     <string name="radio_user">Applis utilisateur</string>
     <string name="prefs_housekeepingmoment">Temps de nettoyage des révisions</string>
-    <string name="msg_appkill_warning">La ou les applications sélectionnées seront arrêtées. Veuillez vous assurer que vous redémarrez votre appareil après le traitement ou que vous ouvrez les applications comme votre réveil ou votre calendrier après coup pour éviter de manquer des notifications importantes. Il se peut que votre clavier ou votre lanceur soit réinitialisé à l\'application par défaut.</string>
+    <string name="msg_appkill_warning">La ou les applications sélectionnées recevront le signal d\'arrêt et continueront après la fin de la tâche. Vérifiez ensuite les applications traitées (et évitez de les lancer alors que le processus est toujours en cours).</string>
     <string name="intro_permission_batteryoptimization">L\'application peut rencontrer des problèmes pour effectuer des sauvegardes programmées sur certaines ROM qui adoptent une optimisation agressive de la batterie, par exemple MIUI, mais même sur AOSP vanilla un tel problème peut se produire.</string>
     <string name="intro_permission_usageaccess">L\'application a besoin de cette autorisation pour pouvoir vérifier les statistiques, la taille des données et du cache de vos applications.</string>
     <string name="intro_permission_storage_location">L\'application a besoin d\'un emplacement de sauvegarde pour stocker les sauvegardes. L\'application peut avoir besoin de quelques gigaoctets de stockage pour une sauvegarde complète et utilise beaucoup le système de fichiers. Veuillez garder cela à l\'esprit lorsque vous choisissez des emplacements de stockage en réseau.</string>
     <string name="intro_permission_storage">L\'application utilise une autorisation de lecture/écriture du stockage pour pouvoir accéder au stockage externe et offrir la possibilité de sauvegarder des données externes data/obb d\'autres applications.</string>
-    <string name="intro_welcome_message">OAndBackupX est un fork du célèbre OAndBackup ayant pour objectif de l\'amener à 2020 et au-delà. Pour l\'instant, la plupart des fonctionnalités et l\'interface utilisateur de l\'application ont été réécrites et certaines ont été ajoutées.
+    <string name="intro_welcome_message">OAndBackupX est un fourchette du célèbre OAndBackup ayant pour objectif de l\'amener à 2020 et au-delà. Pour l\'instant, la plupart des fonctionnalités et l\'interface utilisateur de l\'application ont été réécrites et certaines ont été ajoutées.
 \n L\'application est encore en phase bêta et de nombreux changements de base sont souvent effectués. Veuillez donc lire attentivement le journal des modifications à chaque nouvelle version.
 \n Tout type de contribution est le bienvenu, qu\'il s\'agisse de traductions, d\'idées, de signalements de bogues ou de travail sur le code.
 \n
-\n Maintenant sur les fonctionnalitées de notre App :
-\n - Elle requiert le root et vous permet de sauvegarder les applications individuelles et leurs données.
-\n - La sauvegarde et la restauration de programmes individuels une à une ainsi que la sauvegarde et la restauration par lots de plusieurs programmes sont toutes deux prises en charge.
-\n - La restauration des applications système devrait être possible sans qu\'il soit nécessaire de redémarrer ensuite, mais nous vous déconseillons néanmoins de le faire.
-\n - Les sauvegardes peuvent être programmées sans limite du nombre de programmes individuels et il est possible de créer des listes personnalisées uniques.</string>
+\n Maintenant sur les fonctionnalitées de notre application :
+\n • Elle requiert le root et vous permet de sauvegarder les applications individuelles et leurs données.
+\n • La sauvegarde et la restauration de programmes individuels une à une ainsi que la sauvegarde et la restauration par lots de plusieurs programmes sont toutes deux prises en charge.
+\n • La restauration des applications système devrait être possible sans qu\'il soit nécessaire de redémarrer ensuite, mais nous vous déconseillons néanmoins de le faire.
+\n • Les sauvegardes peuvent être programmées sans limite du nombre de programmes individuels et il est possible de créer des listes personnalisées uniques.</string>
     <string name="help_appTypeHint">* L\'icône du type d\'application sera grise si l\'application est désinstallée et gris foncé si l\'application est désactivée.</string>
-    <string name="help_legend">Légende :</string>
+    <string name="help_legend">Légende :</string>
     <string name="prefs_housekeepingmoment_summary">Configure si la révision la plus ancienne est supprimée avant ou après la création d\'une nouvelle sauvegarde afin de libérer l\'espace disque utilisé par la sauvegarde.</string>
     <string name="prefs_stopcont_summary">Experts uniquement : Cela peut être utile si l\'application modifie des fichiers pendant la sauvegarde et que celle-ci échoue.</string>
     <string name="prefs_housekeepingmoment_after">Après la sauvegarde</string>
     <string name="prefs_password_match_false">Les mots de passe ne correspondent pas</string>
     <string name="prefs_password_match_true">Les mots de passe correspondent</string>
-    <string name="prefs_passwordconfirmation">Confirmation du mot de passe de chiffrement</string>
-    <string name="welcome_to_oabx">Bienvenue sur OABX !</string>
-    <string name="storage_access">Accès au données</string>
+    <string name="prefs_passwordconfirmation">Confirmation du mot de passe du cryptage</string>
+    <string name="welcome_to_oabx">Bienvenue sur OABX !</string>
+    <string name="storage_access">Accès au stockage</string>
     <string name="dialog_unlock">Déverouiller</string>
     <string name="dialog_start">Allons-y !</string>
-    <string name="prefs_unset">Non-définie</string>
+    <string name="prefs_unset">Non définie</string>
     <string name="prefs_numBackupRevisions_summary">La dernière version sera supprimée après la création d\'une nouvelle sauvegarde si le nombre est dépassé. Mettez le à zéro pour garder toutes les versions.</string>
     <string name="prefs_numBackupRevisions">Nombres de versions de la sauvegarde</string>
     <string name="prefs_stopcont">Forcer l\'arrêt du processus de l\'appli avant la sauvegarde/restauration</string>
@@ -221,4 +211,68 @@
     <string name="radio_obbdata">Données OBB</string>
     <string name="radio_deviceprotecteddata">Données protégées par l’appareil</string>
     <string name="radio_externaldata">Données externes</string>
+    <plurals name="days_left">
+        <item quantity="one">%d jour,</item>
+        <item quantity="other">%d jours,</item>
+    </plurals>
+    <string name="logs_text_empty">Il n\'y a rien à afficher !</string>
+    <string name="delete_all_backups">Supprimer toutes les sauvegardes</string>
+    <string name="prefs_disableverification_summary">Désactive cette option pour développeurs pendant la restauration d\'APK et la réactive ensuite. Résout l\'erreur : INSTALL_FAILED_VERIFICATION_FAILURE.</string>
+    <string name="prefs_disableverification">Désactiver la vérification d\'applications via USB</string>
+    <string name="help_issues">Problèmes connus</string>
+    <string name="fetching_action_list">Récupération de la liste des applications pour les %1$s…</string>
+    <string name="prefs_obbdata_summary">Sauvegarde et restaure les fichiers obb de l\'app placés sur le stockage externe (par exemple /storage/emulated/0/Android/obb/)</string>
+    <string name="stats_apps">Applications</string>
+    <string name="stats_backups">Sauvegardes</string>
+    <string name="stats_updated">Mise à jour</string>
+    <string name="radio_launchable">Apps lançables</string>
+    <string name="prefs_obbdata">Sauvegarde des fichiers obb</string>
+    <string name="prefs_allowdowngrade">Autoriser le retour à une version antérieure</string>
+    <string name="prefs_allowdowngrade_summary">Autoriser la restauration d\'une version antérieure à l\'app installée.</string>
+    <string name="prefs_restoreallpermissions">Restaurer avec toutes les permissions</string>
+    <string name="prefs_restoreallpermissions_summary">Donner à l\'app restaurée toutes les permissions qu\'elle demande.</string>
+    <string name="help_faq">Questions fréquemment posées</string>
+    <string name="usage_notes_title">Notes d\'usage</string>
+    <string name="main">Accueil</string>
+    <string name="help">Aide</string>
+    <string name="forceKillMessage">Êtes-vous sûr·e de vouloir forcer l\'arrêt de l\'application \?</string>
+    <plurals name="updated_apps">
+        <item quantity="one">%d application mise à jour</item>
+        <item quantity="other">%d applications mises à jour</item>
+    </plurals>
+    <string name="app_info">Infos sur l\'appli</string>
+    <string name="launch_app">Lancer l\'appli</string>
+    <string name="exodus_report">Rapport Exodus</string>
+    <string name="clear_cache">Effacer le cache</string>
+    <string name="sched_name">Nom :</string>
+    <string name="filtered_list">Liste filtrée</string>
+    <string name="wait_noappslist">Toujours pas de liste d\'applications à sauvegarder. Patientez…</string>
+    <string name="copyOwnApkFailed">Échec de la copie de l\'APK de l\'application dans le répertoire de sauvegarde</string>
+    <string name="copyOwnApkSuccess">Copie de l\'APK de l\'application dans le répertoire de sauvegarde</string>
+    <string name="prefs_saveappslist_summary">Écrit la liste des applications dans un fichier txt dans le répertoire de sauvegarde de l\'utilisateur</string>
+    <string name="prefs_saveappslist">Sauvegarder la liste des applications</string>
+    <string name="prefs_enablespecial_summary">Il doit encore être testé intensivement, en sachant qu\'il peut provoquer des boucles de redémarrage. Les commentaires sont toujours les bienvenus.</string>
+    <string name="prefs_devicelock_summary">Sécuriser l\'application avec les informations d\'identification de l\'appareil</string>
+    <string name="prefs_devicelock">Verrouillage de l\'appareil</string>
+    <plurals name="sched_interval_formal">
+        <item quantity="one">chaque jour</item>
+        <item quantity="other">tous les %d jours</item>
+    </plurals>
+    <string name="global_blocklist_add">Ajouter à la liste de blocage globale</string>
+    <string name="error_datachanged">Les données de l\'application ont été activement modifiées pendant la sauvegarde. Essayez de tuer son processus avant de faire la sauvegarde</string>
+    <string name="dialog_import">Importer</string>
+    <string name="dialog_export">Exporter</string>
+    <string name="prefs_schedulesexportimport_summary">Exporte ou importe la liste des programmes que vous avez créés.</string>
+    <string name="prefs_schedulesexportimport">Programmes d\'exportation/importation</string>
+    <string name="write_apps_list_all">Liste de toutes les applications établie</string>
+    <string name="write_apps_list_filtered">Liste des applications filtrées établie</string>
+    <string name="help_group_matrix">Notre groupe sur Matrix</string>
+    <string name="help_group_telegram">Notre groupe sur Telegram</string>
+    <string name="sortAscDesc">Croissant-Décroissant</string>
+    <string name="logs_share_failed">Fichier de log non trouvé</string>
+    <string name="sched_imported">Planifications importées avec succès</string>
+    <string name="sched_exported">Planifications exportées avec succès</string>
+    <string name="schedule_failed">L\'exécution du programme a échoué</string>
+    <string name="shell_initproblem">Impossible de lancer le gestionnaire de shell. Soit la toybox/busybox est manquante, soit les droits root de l\'application sont désactivés.</string>
+    <string name="no_file_manager_title">Pas de gestionnaire SAF</string>
 </resources>

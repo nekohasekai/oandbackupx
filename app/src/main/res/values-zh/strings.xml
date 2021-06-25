@@ -15,8 +15,6 @@
     <string name="radio_data">数据</string>
     <string name="radio_special">特殊备份</string>
     <string name="de_selectAll">取消/全选</string>
-    <string name="onlyApkBackedUp">仅 APK</string>
-    <string name="onlyDataBackedUp">仅数据</string>
     <string name="refresh">刷新</string>
     <string name="batchbackup">批量备份</string>
     <string name="batchrestore">批量还原</string>
@@ -44,9 +42,7 @@
     <string name="dialogYes">是</string>
     <string name="dialogNo">否</string>
     <string name="restoreDataWithoutApkError">还原应用数据必须先安装或还原相应的APK.</string>
-    <string name="collectingData">正在收集安装包信息…</string>
     <string name="noSu">无法获得超级用户权限</string>
-    <string name="busyboxProblem">找不到 busybox。请检查错误日志</string>
     <!-- mkfileError: an error occured while creating a file. format: string + " " + filename -->
     <string name="mkfileError">无法创建</string>
     <!-- fallbackToDefault: indicates a fallback to the default for creation of a specific file. used in the same way as mkfileError -->
@@ -66,8 +62,6 @@
     <string name="uninstallFailure">卸载时出错</string>
     <string name="errorDialogTitle">发生错误</string>
     <string name="customListTitle">自定义列表</string>
-    <string name="prefs_quickreboot">快速重启</string>
-    <string name="quickRebootMessage">您想重启用户空间吗？</string>
     <string name="notInstalledModeDataWarning">应用无法从一个无 APK 的备份中还原</string>
     <string name="shareTitle">分享</string>
     <string name="prefs_tools">工具</string>
@@ -76,11 +70,11 @@
     <!-- tools_backupsDeleted: shown in a notification followed by the number of backups deleted -->
     <string name="batchDeleteBackupsDeleted">备份已删除：</string>
     <string name="batchDeleteNothingToDelete">没有要删除的备份</string>
-    <string name="enablePackage">启用</string>
+    <string name="enablePackage">启用应用</string>
     <!-- enablePackageTitle: title for a list of checkable users -->
-    <string name="enablePackageTitle">为用户启用</string>
-    <string name="disablePackage">禁用</string>
-    <string name="disablePackageTitle">为用户禁用</string>
+    <string name="enablePackageTitle">为用户启用应用</string>
+    <string name="disablePackage">禁用应用</string>
+    <string name="disablePackageTitle">为用户禁用应用</string>
     <string name="prefs_title">首选项</string>
     <string name="prefs_service">服务首选项</string>
     <string name="prefs_user">用户首选项</string>
@@ -93,7 +87,7 @@
     <string name="prefs_languages">语言</string>
     <string name="prefs_language_system">系统默认</string>
     <string name="prefs_rememberfiltering">记住排序和筛选方式</string>
-    <string name="prefs_enableSpecialBackups">启用特殊备份</string>
+    <string name="prefs_enablespecial">启用特殊备份</string>
     <string name="prefs_excludecache">清除应用缓存</string>
     <string name="prefs_encryption">加密</string>
     <string name="prefs_password">加密密码</string>
@@ -104,24 +98,22 @@
     <string name="prefs_password_summary">设为空表示不加密</string>
     <string name="prefs_encryption_summary">启用以加密数据备份</string>
     <string name="prefs_excludecache_summary">从数据备份中排除应用程序的缓存</string>
-    <string name="prefs_acquirewakelock_summary">在批量操作时获取唤醒锁以阻止手机睡眠。这将大大加快备份/还原速度，但同时也会消耗更多电量。</string>
+    <string name="prefs_acquirewakelock_summary">在批处理操作期间获取一个wakelock以防止睡眠。这将大大加速备份和还原，但会消耗更多电量。</string>
     <string name="prefs_oldbackups_summary">筛选指定天数前的备份，与“显示旧备份”筛选一起使用.</string>
-    <string name="prefs_copyselfapk_summary">备份时将 OAndBackupX 的副本放在备份文件夹的顶层</string>
+    <string name="prefs_copyselfapk_summary">将 OAndBackupX 的一份副本放在备份文件夹的顶层</string>
     <string name="prefs_rememberfiltering_summary">保存所选的排序和筛选方式，只考虑那些被菜单复选框标记的。</string>
-    <string name="prefs_quickreboot_summary">终止 system_server 进程以强制重启用户空间</string>
     <string name="prefs_batchdelete_summary">删除当前未安装的所有应用的备份。</string>
     <string name="sched_title">定时</string>
     <string name="sched_notificationMessage">定时备份</string>
     <string name="sched_interval">间隔天数:</string>
-    <string name="sched_hourOfDay">当天几点:</string>
+    <string name="sched_hourOfDay">当天几时:</string>
     <string name="sched_checkbox">启用</string>
-    <string name="sched_activateButton">现在开始备份</string>
+    <string name="sched_activateButton">现在开始</string>
     <string name="sched_startingbackup">正在开始定时备份…</string>
     <string name="sched_mode">备份模式:</string>
-    <string name="sched_timeLeft">距离下次备份的时间:</string>
-    <string name="sched_customListUpdateButton">更新自定义列表</string>
+    <string name="sched_timeLeft">剩余时间：</string>
     <string name="sched_excludeSystemCheckBox">排除系统应用</string>
-    <string name="sched_blacklist">黑名单</string>
+    <string name="sched_blocklist">黑名单</string>
     <string name="spec_accounts">账户</string>
     <string name="spec_appwidgets">应用微件</string>
     <string name="spec_bluetooth">蓝牙</string>
@@ -156,7 +148,7 @@
     <string name="prefs_theme_light">亮色</string>
     <string name="prefs_theme_dark">暗色</string>
     <string name="prefs_theme_system">系统主题</string>
-    <string name="empty_filtered_list">筛选列表为空，因此将筛选器设置退回默认值</string>
+    <string name="empty_filtered_list">筛选列表为空。</string>
     <string name="dialog_refuse">忽略</string>
     <string name="dialog_approve">让我们开始吧！</string>
     <string name="ignore_battery_optimization_title">电池优化</string>
@@ -188,13 +180,11 @@
     <string name="sort_and_filter">排序&amp;过滤</string>
     <string name="enable_encryption_message">在你的设备上不加密保存你的数据是不安全的。为了你的数据的安全，请启用加密并设置一个密码。</string>
     <string name="enable_encryption_title">数据加密</string>
-    <string name="help_group">官方群组</string>
     <string name="apptype_special">特别备份</string>
     <string name="sortDataSize">数据大小</string>
     <string name="dialog_unlock">解锁</string>
     <string name="dialog_start">让我们开始吧！</string>
     <string name="dialogSave">保存</string>
-    <string name="sched_submode">备份子模式：</string>
     <string name="sched_add">添加计划任务</string>
     <string name="prefs_password_match_false">密码不匹配</string>
     <string name="prefs_password_match_true">密码匹配</string>
@@ -206,7 +196,7 @@
     <string name="help_appTypeHint">* 如果应用程序已卸载，则该应用程序类型的图标将为灰色；如果禁用该应用程序，则该图标将为深灰色。</string>
     <string name="radio_updated">已升级</string>
     <string name="help_legend">图例:</string>
-    <string name="msg_appkill_warning">所选的应用程序将收到停止运行的信号，它们在任务完成后将恢复运行。请确保在任务完成后检查已处理的应用程序，并避免在任务尚未结束时启动它们。</string>
+    <string name="msg_appkill_warning">所选的应用程序将收到停止运行的信号，它们在任务完成后将恢复运行。请在任务完成后检查已处理的应用程序(并避免在任务尚在进行时就启动它们)。</string>
     <string name="prefs_numBackupRevisions_summary">创建新备份时，如果版本数超过了允许的最大值，则将删除最老的版本。将其设置为0以保留所有修订。</string>
     <string name="prefs_numBackupRevisions">备份修订数</string>
     <string name="prefs_stopcont_summary">仅供专家使用: 如果应用程序在备份过程中更改文件，且备份失败，这可能会有所帮助。</string>
@@ -221,5 +211,66 @@
     <string name="radio_externaldata">外部数据</string>
     <string name="logs_text_empty">没什么可显示的！</string>
     <string name="delete_all_backups">删除全部备份</string>
-    <string name="fetching_backup_list">获取用于备份的应用程序列表…</string>
+    <string name="fetching_action_list">正在获取 %1$s 的应用程序列表…</string>
+    <string name="prefs_disableverification_summary">还原APKs时禁用这一开发者选项，并在之后重新启用。用以解决错误：INSTALL_FAILED_VERIFICATION_FAILURE。</string>
+    <string name="prefs_disableverification">禁用通过USB验证应用</string>
+    <plurals name="days_left">
+        <item quantity="other">%d 天,</item>
+    </plurals>
+    <string name="help_issues">已知问题</string>
+    <string name="prefs_obbdata_summary">备份和恢复放置在外部存储中的应用程序的obb文件（如 /storage/emulated/0/Android/obb/）</string>
+    <string name="prefs_obbdata">备份 obb 文件</string>
+    <string name="stats_apps">应用程序</string>
+    <string name="stats_backups">备份</string>
+    <string name="stats_updated">已更新</string>
+    <string name="radio_launchable">可启动的应用程序</string>
+    <string name="prefs_allowdowngrade">允许降级</string>
+    <string name="prefs_allowdowngrade_summary">允许恢复已安装应用程序的旧版本。</string>
+    <string name="prefs_restoreallpermissions">全权限还原</string>
+    <string name="prefs_restoreallpermissions_summary">给予恢复的应用程序要求的所有权限。</string>
+    <string name="help_faq">常见问题</string>
+    <string name="app_info">应用信息</string>
+    <string name="launch_app">启动应用</string>
+    <string name="exodus_report">Exodus 报告</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="usage_notes_title">使用说明</string>
+    <string name="main">主页</string>
+    <string name="help">帮助</string>
+    <plurals name="updated_apps">
+        <item quantity="other">%d 更新的应用</item>
+    </plurals>
+    <string name="forceKillMessage">你确定要强制停止该应用吗？</string>
+    <string name="sched_name">名称：</string>
+    <string name="prefs_enablespecial_summary">仍然需要进行严格的测试，请尝试了解可能导致启动循环的危险。 始终欢迎反馈。</string>
+    <string name="copyOwnApkFailed">未能将应用的 APK 复制到备份目录</string>
+    <string name="copyOwnApkSuccess">已将应用程序的 APK 复制到备份目录</string>
+    <string name="prefs_devicelock_summary">使用设备凭据保护这个应用程序</string>
+    <string name="prefs_devicelock">设备锁</string>
+    <string name="wait_noappslist">仍然没有要保存的应用列表。 等待…</string>
+    <string name="prefs_saveappslist_summary">将应用列表写入用户备份目录中的 txt 文件</string>
+    <string name="prefs_saveappslist">保存应用列表</string>
+    <string name="filtered_list">过滤的列表</string>
+    <string name="dialog_import">导出</string>
+    <string name="dialog_export">导出</string>
+    <string name="schedule_failed">运行日程表失败</string>
+    <string name="shell_initproblem">无法启动外壳处理程序。缺少 toybox/busybox 或禁用了这类应用程序的 root 权限。</string>
+    <string name="no_file_manager_message">没有文件管理器来管理 SAF。也许你已经禁用了内置的文件管理器。请恢复或重新启用它。</string>
+    <string name="no_file_manager_title">无 SAF 管理器</string>
+    <string name="prefs_schedulesexportimport_summary">导出或导入你已创建的日程列表。</string>
+    <string name="prefs_schedulesexportimport">导出/导入时间表</string>
+    <plurals name="sched_interval_formal">
+        <item quantity="other">每 %d 天</item>
+    </plurals>
+    <string name="logs_share_failed">日志文件未找到</string>
+    <string name="sched_imported">成功导入了时间表</string>
+    <string name="sched_exported">成功导出了时间表</string>
+    <string name="error_datachanged">在执行备份时，应用程序的数据已被主动更改。 尝试在备份之前杀死它的进程</string>
+    <string name="write_apps_list_all">写所有应用程序列表文件</string>
+    <string name="write_apps_list_filtered">写已过滤的应用程序列表文件</string>
+    <string name="help_group_matrix">我们的 Matrix 群组</string>
+    <string name="help_group_telegram">我们的 Telegram 群组</string>
+    <string name="sortAscDesc">升序-降序</string>
+    <string name="intro_permission_storage_location_warning">不要选择主存储目录或“下载”文件夹，为你的备份创建一个文件夹。 这篇常见问题解答中有更多内容</string>
+    <string name="global_blocklist_add">添加到全局拦截列表</string>
+    <string name="forceKill">强制杀死</string>
 </resources>

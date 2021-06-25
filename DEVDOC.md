@@ -2,19 +2,25 @@
 
 - [ ] Rootless Backups: maybe [Shizuku](https://github.com/RikkaApps/Shizuku) could be useful in this matter.
 
-- [ ] More functionality for AppSheet: kill app, share backup, clear data (for now...).
+- [ ] More functionality for AppSheet:
+
+  - [x] Kill app
+
+  - [ ] share backup
+
+  - [x] launch
+
+  - [x] package info shortcut
 
 - [x] Multi-Backups support
 
-- [ ] Add options upon choosing Backup from AppSheet: external/obb/cache.
+- [x] Add options upon choosing Backup from AppSheet: external/obb/cache.
 
 - [x] External Storage/SAF support: my idea on it is splitting Backup-Actions into more steps(vice versa for Restore)
 
 - [x] SymLinks and "special" Files backup: fixing errors on some "unique" apps.
 
-- [ ] Add Flashable Zip feature: lowest priority for now.
-
-- [ ] Reformat Date handling in schedules
+- [x] Reformat Date handling in schedules
 
 - [x] Customize tags icons' colors
 
@@ -22,32 +28,68 @@
 
 ## Needed Fixes
 
-- [ ] Fully support for Special Backups: Accounts, SMS, Bluetooth, Wifi (for now...).
+- [ ] Fully support for Special Backups:
 
-- [ ] Compatibility with Work Profiles: making Backup/Restore-Task profiles-sensitive. NEEDS TESTING
+  - [ ] Accounts
+
+  - [ ] SMS
+
+  - [ ] Bluetooth
+
+  - [ ] Wifi
+
+  - [ ] and others…
+
+- [ ] Compatibility with Work Profiles: making Backup/Restore-Task profiles-sensitive. (Next Version)
 
 - [x] Handle the error about disabling "verify apps over USB".
 
-- [ ] Replace deprecated Classes/Methods:
-    - [ ] AsyncTask
-    - [x] ProgressDialog
+- [x] Replace deprecated Classes/Methods:
+  
+  - [x] AsyncTask
+
+  - [x] ProgressDialog
 
 - [x] kill or not kill: all system apps, uids < 10000 or blacklisting...
 
-- [ ] TargetSDK 30 & updated StorageManger on SDK29: storage access problems
+- [ ] TargetSDK 30 & updated StorageManger on SDK29: on test
 
 - [x] Improve on performance in aftermath of using SAF (maybe more can be done?)
 
 - [x] Enable encryption direct shortcut
 
-- [ ] Not responding to clicks after long time in background
+- [x] Not responding to clicks after long time in background
+
+- [x] Fix GSF push notifications' issue. NEEDS SOME TESTING
 
 ## Planned Restructure
 
+- [x] Improve UI/UX (on anniversary release as co-op with @opepp)
+
 - [ ] Use DataBinding/BindingAdapter where useful
+
+- [ ] Migrate to Jetpack Compose instead of XML (where possible)
+
+- [x] Refactore Batch & Schedules handling
 
 - [x] Migrate to Kotlin
 
-- [ ] Use Kotlin style explicitly
+- [x] Use Kotlin style explicitly: a process taking place with each class refactored
 
-- [ ] ViewModel where useful
+- [x] ViewModel where useful
+  
+  - [x] Scheduler
+  
+  - [x] Main & Batch
+  
+  - [x] AppSheet
+
+- [x] Rewrite Help text
+
+## Low Priority
+
+- [ ] Add Flashable Zip feature
+
+- [ ] (re)integrate OpenGPG
+
+- [ ] Legacy Backup mode

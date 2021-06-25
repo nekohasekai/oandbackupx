@@ -2,20 +2,25 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.machiav3lli.backup.fragments.MainFragment"
-        tools:layout="@layout/fragment_main" />
+        android:id="@+id/homeFragment"
+        android:name="com.machiav3lli.backup.fragments.HomeFragment"
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/backupFragment"
-        android:name="com.machiav3lli.backup.fragments.BackupFragment"
-        tools:layout="@layout/fragment_main" />
+        android:name="com.machiav3lli.backup.fragments.BatchFragment$BackupFragment"
+        tools:layout="@layout/fragment_batch" />
 
     <fragment
         android:id="@+id/restoreFragment"
-        android:name="com.machiav3lli.backup.fragments.RestoreFragment"
-        tools:layout="@layout/fragment_main" />
+        android:name="com.machiav3lli.backup.fragments.BatchFragment$RestoreFragment"
+        tools:layout="@layout/fragment_batch" />
+
+    <fragment
+        android:id="@+id/schedulerFragment"
+        android:name="com.machiav3lli.backup.fragments.SchedulerFragment"
+        tools:layout="@layout/fragment_scheduler" />
 </navigation>

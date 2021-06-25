@@ -4,28 +4,35 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.provider.DocumentsContract
-import android.util.Log
-import com.machiav3lli.backup.Constants.classTag
-import com.machiav3lli.backup.handler.DocumentContractApi
+import com.machiav3lli.backup.handler.LogsHandler
+import com.machiav3lli.backup.utils.exists
+import com.machiav3lli.backup.utils.getName
+import com.machiav3lli.backup.utils.isDirectory
+import com.machiav3lli.backup.utils.isFile
 import java.io.FileNotFoundException
 import java.util.*
 
-open class StorageFile protected constructor(val parentFile: StorageFile?, private val context: Context, var uri: Uri) {
+// TODO MAYBE migrate at some point to FuckSAF
+open class StorageFile protected constructor(
+    val parentFile: StorageFile?,
+    private val context: Context,
+    var uri: Uri
+) {
     var name: String? = null
         get() {
-            if (field == null) field = DocumentContractApi.getName(context, uri)
+            if (field == null) field = uri.getName(context)
             return field
         }
         private set
 
     val isFile: Boolean
-        get() = DocumentContractApi.isFile(context, this.uri)
+        get() = uri.isFile(context)
 
     val isPropertyFile: Boolean
-        get() = DocumentContractApi.isPropertyFile(context, this.uri)
+        get() = uri.isFile(context)
 
     val isDirectory: Boolean
-        get() = DocumentContractApi.isDirectory(context, this.uri)
+        get() = uri.isDirectory(context)
 
     fun createDirectory(displayName: String): StorageFile? {
         val result = createFile(context, uri, DocumentsContract.Document.MIME_TYPE_DIR, displayName)
@@ -42,6 +49,9 @@ open class StorageFile protected constructor(val parentFile: StorageFile?, priva
             DocumentsContract.deleteDocument(context.contentResolver, uri)
         } catch (e: FileNotFoundException) {
             false
+        } catch (e: Throwable) {
+            LogsHandler.unhandledException(e, uri)
+            false
         }
     }
 
@@ -53,37 +63,49 @@ open class StorageFile protected constructor(val parentFile: StorageFile?, priva
                 }
             }
         } catch (e: FileNotFoundException) {
-            return null
+        } catch (e: Throwable) {
+            LogsHandler.unhandledException(e, uri)
         }
         return null
     }
 
-    // TODO cause of huge part of cpu time
     @Throws(FileNotFoundException::class)
     fun listFiles(): Array<StorageFile> {
-        if (!exists()) {
+        try {
+            exists()
+        } catch (e: Throwable) {
             throw FileNotFoundException("File $uri does not exist")
         }
         val uriString = this.uri.toString()
         if (cacheDirty) {
             cacheDirty = false
+            cache.clear()
         }
         if (cache[uriString].isNullOrEmpty()) {
             val resolver = context.contentResolver
-            val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(this.uri,
-                    DocumentsContract.getDocumentId(this.uri))
+            val childrenUri = try {
+                DocumentsContract.buildChildDocumentsUriUsingTree(
+                    this.uri,
+                    DocumentsContract.getDocumentId(this.uri)
+                )
+            } catch (e: IllegalArgumentException) {
+                return arrayOf()
+            }
             val results = ArrayList<Uri>()
             var cursor: Cursor? = null
             try {
-                cursor = resolver.query(childrenUri, arrayOf(DocumentsContract.Document.COLUMN_DOCUMENT_ID),
-                        null, null, null)
+                cursor = resolver.query(
+                    childrenUri, arrayOf(DocumentsContract.Document.COLUMN_DOCUMENT_ID),
+                    null, null, null
+                )
                 var documentUri: Uri
-                while (cursor!!.moveToNext()) {
-                    documentUri = DocumentsContract.buildDocumentUriUsingTree(this.uri, cursor.getString(0))
+                while (cursor?.moveToNext() == true) {
+                    documentUri =
+                        DocumentsContract.buildDocumentUriUsingTree(this.uri, cursor.getString(0))
                     results.add(documentUri)
                 }
-            } catch (e: Exception) {
-                Log.w(TAG, "Failed query: $e")
+            } catch (e: Throwable) {
+                LogsHandler.unhandledException(e, uri)
             } finally {
                 closeQuietly(cursor)
             }
@@ -94,23 +116,25 @@ open class StorageFile protected constructor(val parentFile: StorageFile?, priva
         return cache[uriString] ?: arrayOf()
     }
 
-    fun renameTo(displayName: String?): Boolean {
+    fun renameTo(displayName: String): Boolean {
         // noinspection OverlyBroadCatchBlock
         return try {
             val result = DocumentsContract.renameDocument(
-                    context.contentResolver, uri, displayName!!)
+                context.contentResolver, uri, displayName
+            )
             if (result != null) {
                 uri = result
                 return true
             }
             false
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
+            LogsHandler.unhandledException(e, uri)
             false
         }
     }
 
     fun exists(): Boolean {
-        return DocumentContractApi.exists(context, uri)
+        return uri.exists(context)
     }
 
     override fun toString(): String {
@@ -118,19 +142,27 @@ open class StorageFile protected constructor(val parentFile: StorageFile?, priva
     }
 
     companion object {
-        val TAG = classTag(".StorageFile")
         val cache: MutableMap<String, Array<StorageFile>> = mutableMapOf()
         var cacheDirty = true
 
         fun fromUri(context: Context, uri: Uri): StorageFile {
-            // Todo: Figure out what's wrong with the Uris coming from the intent and why they need to be processed with DocumentsContract.buildDocumentUriUsingTree(value, DocumentsContract.getTreeDocumentId(value)) first
+            // Todo: Figure out what's wrong with the Uris coming from the intent and why they need to be processed
+            //  with DocumentsContract.buildDocumentUriUsingTree(value, DocumentsContract.getTreeDocumentId(value)) first
             return StorageFile(null, context, uri)
         }
 
-        fun createFile(context: Context, self: Uri?, mimeType: String?, displayName: String?): Uri? {
+        fun createFile(context: Context, uri: Uri, mimeType: String, displayName: String): Uri? {
             return try {
-                DocumentsContract.createDocument(context.contentResolver, self!!, mimeType!!, displayName!!)
+                DocumentsContract.createDocument(
+                    context.contentResolver,
+                    uri,
+                    mimeType,
+                    displayName
+                )
             } catch (e: FileNotFoundException) {
+                null
+            } catch (e: Throwable) {
+                LogsHandler.unhandledException(e, uri)
                 null
             }
         }
@@ -146,7 +178,8 @@ open class StorageFile protected constructor(val parentFile: StorageFile?, priva
                 } catch (rethrown: RuntimeException) {
                     // noinspection ProhibitedExceptionThrown
                     throw rethrown
-                } catch (ignored: Exception) {
+                } catch (e: Throwable) {
+                    LogsHandler.unhandledException(e)
                 }
             }
         }

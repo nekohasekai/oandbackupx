@@ -17,81 +17,64 @@
  */
 package com.machiav3lli.backup.utils
 
-import android.animation.Animator
 import android.app.Activity
 import android.content.DialogInterface
-import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
-import com.machiav3lli.backup.Constants.classTag
 import com.machiav3lli.backup.R
 import com.machiav3lli.backup.items.ActionResult
 
-object UIUtils {
-    private val TAG = classTag(".UIUtils")
-
-    fun setDayNightTheme(theme: String?) {
-        when (theme) {
-            "light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            "dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        }
-    }
-
-    fun showActionResult(activity: Activity, result: ActionResult, saveMethod: DialogInterface.OnClickListener?) {
-        activity.runOnUiThread {
-            val builder = AlertDialog.Builder(activity)
-                    .setPositiveButton(R.string.dialogOK, null)
-            if (saveMethod != null) {
-                builder.setNegativeButton(R.string.dialogSave, saveMethod)
-            }
-            if (!result.succeeded) {
-                builder.setTitle(R.string.errorDialogTitle)
-                        .setMessage(result.message)
-                builder.show()
-            }
-        }
-    }
-
-    fun showError(activity: Activity, message: String?) {
-        activity.runOnUiThread {
-            AlertDialog.Builder(activity)
-                    .setTitle(R.string.errorDialogTitle)
-                    .setMessage(message)
-                    .setPositiveButton(R.string.dialogOK, null).show()
-        }
-    }
-
-    fun showWarning(activity: Activity, title: String?, message: String?, callback: DialogInterface.OnClickListener?) {
-        activity.runOnUiThread {
-            AlertDialog.Builder(activity)
-                    .setTitle(title)
-                    .setMessage(message)
-                    .setNeutralButton(R.string.dialogOK, callback)
-                    .setCancelable(false)
-                    .show()
-        }
-    }
-
-    fun setVisibility(view: View, visibility: Int, withAnimation: Boolean) {
-        view.animate().alpha(if (visibility == View.VISIBLE) 1.0f else 0.0f)
-                .setDuration(if (withAnimation) 600 else 1.toLong())
-                .setListener(object : Animator.AnimatorListener {
-                    override fun onAnimationStart(animation: Animator) {
-                        if (visibility == View.VISIBLE && view.visibility == View.GONE) view.visibility = View.VISIBLE
-                    }
-
-                    override fun onAnimationEnd(animation: Animator) {
-                        view.visibility = visibility
-                    }
-
-                    override fun onAnimationCancel(animation: Animator) {
-                        // not relevant
-                    }
-
-                    override fun onAnimationRepeat(animation: Animator) {
-                        // not relevant
-                    }
-                })
+fun setDayNightTheme(theme: String?) {
+    when (theme) {
+        "light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        "dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }
 }
+
+fun Activity.showActionResult(result: ActionResult, saveMethod: DialogInterface.OnClickListener) =
+    runOnUiThread {
+        val builder = AlertDialog.Builder(this)
+            .setPositiveButton(R.string.dialogOK, null)
+        if (!result.succeeded) {
+            builder.setNegativeButton(R.string.dialogSave, saveMethod)
+        }
+        if (!result.succeeded) {
+            builder.setTitle(R.string.errorDialogTitle)
+                .setMessage(result.message)
+            builder.show()
+        }
+    }
+
+
+fun Activity.showError(message: String?) = runOnUiThread {
+    AlertDialog.Builder(this)
+        .setTitle(R.string.errorDialogTitle)
+        .setMessage(message)
+        .setPositiveButton(R.string.dialogOK, null).show()
+}
+
+fun Activity.showFatalUiWarning(message: String) = showWarning(
+    this.javaClass.simpleName,
+    message
+) { _: DialogInterface?, _: Int -> finishAffinity() }
+
+fun Activity.showWarning(
+    title: String,
+    message: String,
+    callback: DialogInterface.OnClickListener?
+) = runOnUiThread {
+    AlertDialog.Builder(this)
+        .setTitle(title)
+        .setMessage(message)
+        .setNeutralButton(R.string.dialogOK, callback)
+        .setCancelable(false)
+        .show()
+}
+
+fun Activity.showToast(message: String?) = runOnUiThread {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+

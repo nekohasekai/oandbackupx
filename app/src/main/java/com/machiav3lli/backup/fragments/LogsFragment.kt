@@ -22,42 +22,101 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.machiav3lli.backup.Constants.classTag
-import com.machiav3lli.backup.databinding.FragmentLogsBinding
-import com.machiav3lli.backup.utils.LogUtils
-import java.io.IOException
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.machiav3lli.backup.R
+import com.machiav3lli.backup.databinding.FragmentRecyclerBinding
+import com.machiav3lli.backup.items.LogItemX
+import com.machiav3lli.backup.viewmodels.LogViewModel
+import com.machiav3lli.backup.viewmodels.LogViewModelFactory
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
+import com.mikepenz.fastadapter.listeners.ClickEventHook
 
 class LogsFragment : Fragment() {
-    private var binding: FragmentLogsBinding? = null
+    private lateinit var binding: FragmentRecyclerBinding
+    private val logItemAdapter = ItemAdapter<LogItemX>()
+    private var logFastAdapter: FastAdapter<LogItemX>? = null
+    private lateinit var viewModel: LogViewModel
 
-    private val logText: String?
-        get() = try {
-            val logUtils = LogUtils(requireContext())
-            logUtils.readFromLogFile()
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null
-        }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         super.onCreate(savedInstanceState)
-        binding = FragmentLogsBinding.inflate(inflater, container, false)
-        return binding!!.root
+        binding = FragmentRecyclerBinding.inflate(inflater, container, false)
+
+        val viewModelFactory = LogViewModelFactory(requireActivity().application)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(LogViewModel::class.java)
+
+        viewModel.refreshActive.observe(viewLifecycleOwner, {
+            binding.refreshLayout.isRefreshing = it
+        })
+        viewModel.refreshNow.observe(viewLifecycleOwner, {
+            if (it) refresh()
+        })
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val logText = logText
-        if (logText != null && logText.isNotEmpty()) binding!!.logsText.text = logText
+        setupViews()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.refreshNow.value != true) refresh()
+        else viewModel.refreshList()
     }
 
-    companion object {
-        private val TAG = classTag(".LogFragment")
+    private fun setupViews() {
+        logFastAdapter = FastAdapter.with(logItemAdapter)
+        logFastAdapter?.setHasStableIds(true)
+        binding.recyclerView.adapter = logFastAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        logFastAdapter?.addEventHook(OnDeleteClickHook())
+        logFastAdapter?.addEventHook(OnShareClickHook())
+        binding.refreshLayout.setOnRefreshListener { viewModel.refreshList() }
+    }
+
+    inner class OnShareClickHook : ClickEventHook<LogItemX>() {
+        override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
+            return viewHolder.itemView.findViewById(R.id.share)
+        }
+
+        override fun onClick(
+            v: View,
+            position: Int,
+            fastAdapter: FastAdapter<LogItemX>,
+            item: LogItemX
+        ) {
+            viewModel.shareLog(item.log)
+        }
+    }
+
+    inner class OnDeleteClickHook : ClickEventHook<LogItemX>() {
+        override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
+            return viewHolder.itemView.findViewById(R.id.delete)
+        }
+
+        override fun onClick(
+            v: View,
+            position: Int,
+            fastAdapter: FastAdapter<LogItemX>,
+            item: LogItemX
+        ) {
+            viewModel.deleteLog(item.log)
+        }
+    }
+
+    fun refresh() {
+        val logsList = mutableListOf<LogItemX>()
+        viewModel.logsList.value?.forEach { logsList.add(LogItemX(it)) }
+        FastAdapterDiffUtil[logItemAdapter] = logsList
+        logFastAdapter?.notifyDataSetChanged()
+        viewModel.finishRefresh()
     }
 }

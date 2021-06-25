@@ -17,32 +17,23 @@
  */
 package com.machiav3lli.backup.items
 
-import android.view.View
-import androidx.appcompat.widget.AppCompatCheckBox
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
-import com.machiav3lli.backup.R
-import com.machiav3lli.backup.handler.action.BaseAppAction
-import com.machiav3lli.backup.utils.ItemUtils.calculateID
-import com.machiav3lli.backup.utils.ItemUtils.getFormattedDate
-import com.machiav3lli.backup.utils.ItemUtils.pickAppBackupMode
-import com.machiav3lli.backup.utils.ItemUtils.pickItemAppType
-import com.mikepenz.fastadapter.FastAdapter
-import com.mikepenz.fastadapter.items.AbstractItem
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import com.machiav3lli.backup.*
+import com.machiav3lli.backup.databinding.ItemBatchXBinding
+import com.machiav3lli.backup.utils.*
+import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
-class BatchItemX(var app: AppInfoX) : AbstractItem<BatchItemX.ViewHolder>() {
+class BatchItemX(var app: AppInfo, val backupBoolean: Boolean) : AbstractBindingItem<ItemBatchXBinding>() {
     var isApkChecked = false
     var isDataChecked = false
 
     val actionMode: Int
-        get() = if (isApkChecked && isDataChecked) {
-            BaseAppAction.MODE_BOTH
-        } else if (isApkChecked) {
-            BaseAppAction.MODE_APK
-        } else if (isDataChecked) {
-            BaseAppAction.MODE_DATA
-        } else {
-            BaseAppAction.MODE_UNSET
+        get() = when {
+            isApkChecked && isDataChecked -> ALT_MODE_BOTH
+            isApkChecked -> ALT_MODE_APK
+            isDataChecked -> ALT_MODE_DATA
+            else -> ALT_MODE_UNSET
         }
 
     val isChecked: Boolean
@@ -54,50 +45,33 @@ class BatchItemX(var app: AppInfoX) : AbstractItem<BatchItemX.ViewHolder>() {
             super.identifier = identifier
         }
 
-    override val layoutRes: Int
-        get() = R.layout.item_batch_x
-
-    override fun getViewHolder(v: View): ViewHolder {
-        return ViewHolder(v)
-    }
-
     override val type: Int
         get() = R.id.fastadapter_item
 
-    class ViewHolder(view: View?) : FastAdapter.ViewHolder<BatchItemX>(view!!) {
-        var apkCheckBox: AppCompatCheckBox = itemView.findViewById(R.id.apkCheckBox)
-        var dataCheckBox: AppCompatCheckBox = itemView.findViewById(R.id.dataCheckbox)
-        var label: AppCompatTextView = itemView.findViewById(R.id.label)
-        var packageName: AppCompatTextView = itemView.findViewById(R.id.packageName)
-        var lastBackup: AppCompatTextView = itemView.findViewById(R.id.lastBackup)
-        var appType: AppCompatImageView = itemView.findViewById(R.id.appType)
-        var update: AppCompatImageView = itemView.findViewById(R.id.update)
+    override fun createBinding(inflater: LayoutInflater, parent: ViewGroup?): ItemBatchXBinding {
+        return ItemBatchXBinding.inflate(inflater, parent, false)
+    }
 
-        override fun bindView(item: BatchItemX, payloads: List<Any>) {
-            val app = item.app
-            apkCheckBox.isChecked = item.isApkChecked
-            dataCheckBox.isChecked = item.isDataChecked
-            label.text = app.packageLabel
-            packageName.text = app.packageName
-            if (app.hasBackups()) {
-                if (app.isUpdated) {
-                    update.visibility = View.VISIBLE
-                } else {
-                    update.visibility = View.GONE
-                }
-                lastBackup.text = getFormattedDate(app.latestBackup!!.backupProperties.backupDate!!, false)
-            } else {
-                update.visibility = View.GONE
-                lastBackup.text = null
-            }
-            pickAppBackupMode(app, itemView)
-            pickItemAppType(app, appType)
-        }
+    override fun bindView(binding: ItemBatchXBinding, payloads: List<Any>) {
+        binding.apkCheckbox.isChecked = isApkChecked
+        binding.dataCheckbox.isChecked = isDataChecked
+        binding.apkCheckbox.setVisible(app.hasApk || backupBoolean)
+        binding.dataCheckbox.setVisible(app.hasAppData || backupBoolean)
+        binding.label.text = app.packageLabel
+        binding.packageName.text = app.packageName
+        binding.lastBackup.text = app.latestBackup?.backupProperties?.backupDate?.getFormattedDate(false)
+        binding.update.setExists(app.hasBackups && app.isUpdated)
+        binding.apkMode.setExists(app.hasApk)
+        binding.dataMode.setExists(app.hasAppData)
+        binding.extDataMode.setExists(app.hasExternalData)
+        binding.deDataMode.setExists(app.hasDevicesProtectedData)
+        binding.obbMode.setExists(app.hasObbData)
+        binding.appType.setAppType(app)
+    }
 
-        override fun unbindView(item: BatchItemX) {
-            label.text = null
-            packageName.text = null
-            lastBackup.text = null
-        }
+    override fun unbindView(binding: ItemBatchXBinding) {
+        binding.label.text = null
+        binding.packageName.text = null
+        binding.lastBackup.text = null
     }
 }

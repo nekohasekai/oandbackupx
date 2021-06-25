@@ -11,10 +11,8 @@
     <string name="radio_data">Δεδομένα</string>
     <string name="radio_both">Εφαρμογή + Δεδομένα</string>
     <string name="de_selectAll">Από/επιλογή όλων</string>
-    <string name="onlyApkBackedUp">Μόνον εφαρμογή</string>
-    <string name="onlyDataBackedUp">Μόνο δεδομένα</string>
-    <string name="refresh">Επαναφόρτωση</string>
-    <string name="batchbackup">Μαζικά αντίγραφα</string>
+    <string name="refresh">Ανανέωση</string>
+    <string name="batchbackup">Μαζική δημιουργία αντιγράφων ασφαλείας</string>
     <string name="batchrestore">Μαζική επαναφορά</string>
     <string name="search">Αναζήτηση</string>
     <string name="searchHint">Αναζήτηση εφαρμογών</string>
@@ -36,14 +34,12 @@
     <string name="sort">Ταξινόμηση και φιλτράρισμα</string>
     <string name="uninstallDialogMessage">Απεγκατάσταση της εφαρμογής;</string>
     <string name="deleteBackupDialogMessage">Διαγραφή αρχείων αντιγράφου;</string>
-    <string name="dialogOK">ΟΚ</string>
-    <string name="dialogCancel">Ακύρωση</string>
+    <string name="dialogOK">Εντάξει</string>
+    <string name="dialogCancel">Άκυρο</string>
     <string name="dialogYes">Ναι</string>
     <string name="dialogNo">Όχι</string>
     <string name="restoreDataWithoutApkError">Η επαναφορά των δεδομένων είναι αδύνατη χωρίς την επαναφορά της εφαρμογής, το πακέτο δεν είναι εγκατεστημένο.</string>
-    <string name="collectingData">Συλλογή πληροφοριών πακέτου…</string>
     <string name="noSu">Αδυναμία απόκτησης αδειών υπερχρήστη</string>
-    <string name="busyboxProblem">Αδυναμία εύρεσης ΒusyΒox. Παρακαλώ ελέγξτε το αρχείο καταγραφής σφαλμάτων</string>
     <!-- mkfileError: an error occured while creating a file. format: string + " " + filename -->
     <string name="mkfileError">Αδυναμία δημιουργίας</string>
     <!-- fallbackToDefault: indicates a fallback to the default for creation of a specific file. used in the same way as mkfileError -->
@@ -63,8 +59,6 @@
     <string name="uninstallFailure">Σφάλμα κατά την απεγκατάσταση</string>
     <string name="errorDialogTitle">Εμφανίστηκαν σφάλματα</string>
     <string name="customListTitle">Ειδική λίστα</string>
-    <string name="prefs_quickreboot">Γρήγορη επανεκκίνηση</string>
-    <string name="quickRebootMessage">Επιθυμείτε να επανεκκίνησετε το χώρο χρήστη;</string>
     <string name="notInstalledModeDataWarning">Η εφαρμογή δεν μπορεί να επαναφερθεί από ένα αντίγραφο χωρίς apk</string>
     <string name="shareTitle">Κοινοποίηση</string>
     <string name="prefs_tools">Εργαλεία</string>
@@ -73,11 +67,11 @@
     <!-- tools_backupsDeleted: shown in a notification followed by the number of backups deleted -->
     <string name="batchDeleteBackupsDeleted">Διεγραμμένα αντίγραφα:</string>
     <string name="batchDeleteNothingToDelete">Δεν υπάρχουν αντίγραφα για διαγραφή</string>
-    <string name="enablePackage">Ενεργοποίηση</string>
+    <string name="enablePackage">Ενεργοποίηση εφαρμογής</string>
     <!-- enablePackageTitle: title for a list of checkable users -->
-    <string name="enablePackageTitle">Ενεργοποίηση για χρήστες</string>
-    <string name="disablePackage">Απενεργοποίηση</string>
-    <string name="disablePackageTitle">Απενεργοποίηση για χρήστες</string>
+    <string name="enablePackageTitle">Ενεργοποίηση εφαρμογής για χρήστες</string>
+    <string name="disablePackage">Απενεργοποίηση εφαρμογής</string>
+    <string name="disablePackageTitle">Απενεργοποίηση εφαρμογής για χρήστες</string>
     <string name="prefs_title">Προτιμήσεις</string>
     <string name="prefs_service">Προτιμήσεις υπηρεσίας</string>
     <string name="prefs_user">Προτιμήσεις χρήστη</string>
@@ -90,7 +84,7 @@
     <string name="prefs_languages">Γλώσσα</string>
     <string name="prefs_language_system">Προεπιλογή συστήματος</string>
     <string name="prefs_rememberfiltering">Διατήρηση ταξινόμησης και φιλτραρίσματος</string>
-    <string name="prefs_enableSpecialBackups">Ενεργοποίηση ειδικών αντιγράφων</string>
+    <string name="prefs_enablespecial">Ενεργοποίηση ειδικών αντιγράφων</string>
     <string name="prefs_excludecache">Καθαρισμός μνήμης cache της εφαρμογής</string>
     <string name="prefs_encryption">Κρυπτογράφηση</string>
     <string name="prefs_password">Κωδικός κρυπτογράφησης</string>
@@ -101,24 +95,22 @@
     <string name="prefs_password_summary">Αφήστε κενό για απενεργοποίηση κρυπτογράφησης</string>
     <string name="prefs_encryption_summary">Ενεργοποίηση για κρυπτογράφηση δεδομένων των αντιγράφων</string>
     <string name="prefs_excludecache_summary">Αποκλεισμός της μνήμης cache της εφαρμογής από το αντίγραφο δεδομένων</string>
-    <string name="prefs_acquirewakelock_summary">Απόκτηση wakelock κατά την εκτέλεση διεργασιών μαζικών αντιγράφων ώστε να αποτραπεί ο ύπνος. Θα επιταχύνει τα αντίγραφα και τις επαναφορές σημαντικά αλλά θα καταναλώνει περισσότερη ενέργεια.</string>
+    <string name="prefs_acquirewakelock_summary">Απόκτηση wakelock κατά τη διάρκεια διεργασιών μαζικών αντιγράφων ώστε να αποτραπεί ο ύπνος. Επιταχύνει τα αντίγραφα και τις επαναφορές σημαντικά, αλλά καταναλώνει περισσότερη ενέργεια.</string>
     <string name="prefs_oldbackups_summary">Φιλτράρισμα αντιγράφων παλαιότερων από την τιμή σε μέρες. Χρησιμοποιείται μαζί με το φίλτρο \'εμφάνιση παλαιών αντιγράφων\'.</string>
-    <string name="prefs_copyselfapk_summary">Τοποθετήστε ένα αντίγραφο του OAndBackupX στο υψηλότερο επίπεδο του φακέλου αντιγράφων όταν δημιουργηθεί αντίγραφο</string>
+    <string name="prefs_copyselfapk_summary">Τοποθετήστε ένα αντίγραφο του OAndBackupX στο υψηλότερο επίπεδο του φακέλου αντιγράφων</string>
     <string name="prefs_rememberfiltering_summary">Αποθηκεύει την επιλεγμένη μέθοδο ταξινόμησης και φιλτραρίσματος. Μόνον αυτά που είναι σημειωμένα με ένα κουτάκι στον κατάλογο λαμβάνονται υπόψιν.</string>
-    <string name="prefs_quickreboot_summary">Τερματίζει τη διεργασία system_server ώστε να εξαναγκάσει την επανεκκίνηση του χώρου χρήστη</string>
     <string name="prefs_batchdelete_summary">Διαγραφή των αντιγράφων όλων των εφαρμογών που δεν είναι εγκατεστημένες στο παρόν.</string>
     <string name="sched_title">Προγραμματισμός</string>
     <string name="sched_notificationMessage">Προγραμματισμένο αντίγραφο</string>
     <string name="sched_interval">Μεσοδιάστημα σε ημέρες:</string>
     <string name="sched_hourOfDay">Ώρα της ημέρας:</string>
     <string name="sched_checkbox">Ενεργοποίηση</string>
-    <string name="sched_activateButton">Εκκίνηση δημιουργίας αντιγράφου τώρα</string>
+    <string name="sched_activateButton">Εκκίνηση τώρα</string>
     <string name="sched_startingbackup">Εκκίνηση προγραμματισμένου αντιγράφου…</string>
     <string name="sched_mode">Λειτουργία δημιουργίας αντιγράφου:</string>
-    <string name="sched_timeLeft">Ώρες μέχρι το επόμενο αντίγραφο:</string>
-    <string name="sched_customListUpdateButton">Ενημέρωση ειδικής λίστας</string>
+    <string name="sched_timeLeft">Εναπομένων χρόνος:</string>
     <string name="sched_excludeSystemCheckBox">Εξαίρεση εφαρμογών συστήματος</string>
-    <string name="sched_blacklist">Μαύρη λίστα</string>
+    <string name="sched_blocklist">Μαύρη λίστα</string>
     <string name="spec_accounts">Λογαριασμοί</string>
     <string name="spec_appwidgets">Γραφικά στοιχεία Εφαρμογής</string>
     <string name="spec_bluetooth">Bluetooth</string>
@@ -153,9 +145,9 @@
     <string name="other_filters_options">Ειδικά φίλτρα:</string>
     <string name="deleted_backup">Το αντίγραφο διαγράφηκε</string>
     <string name="prefs_theme_light">Φωτεινό</string>
-    <string name="prefs_theme_dark">Σκούρο</string>
+    <string name="prefs_theme_dark">Σκοτεινό</string>
     <string name="prefs_theme_system">Θέμα συστήματος</string>
-    <string name="empty_filtered_list">Η φιλτραρισμένη λίστα είναι κενή, επομένως τα φίλτρα επιστρέφουν στην προεπιλογή</string>
+    <string name="empty_filtered_list">Η φιλτραρισμένη λίστα είναι κενή.</string>
     <string name="dialog_refuse">Δε θα το κάνω</string>
     <string name="dialog_approve">Ας το κάνω!</string>
     <string name="ignore_battery_optimization_title">Βελτιστοποίηση Μπαταρίας</string>
@@ -174,7 +166,7 @@
 \n • Αμφότερες η δημιουργία αντιγράφων και η επαναφορά μεμονωμένων προγραμμάτων ένα-τη-φορά και η μαζική δημιουργία αντιγράφων και η επαναφορά πολλαπλών προγραμμάτων υποστηρίζονται.
 \n • Η επαναφορά εφαρμογών συστήματος πρέπει να είναι δυνατή δίχως να απαιτείται επανεκκίνηση έπειτα, παρ\' όλα αυτά δε σας συνιστούμε να το κάνετε.
 \n • Η δημιουργία αντιγράφων μπορεί να προγραμματιστεί δίχως όριο στον αριθμό των μεμονωμένων προγραμμάτων και υπάρχει η πιθανότητα δημιουργίας ξεχωριστών ειδικών λιστών.</string>
-    <string name="msg_appkill_warning">Η επιλεγμένη εγαρμογή(ές) θα τερματιστεί. Παρακαλώ σιγουρέψτε, ότι είτε θα επανεκκινήσετε τη συσκευή σας μετά την επεξεργασία είτε θα ανοίξετε εφαρμογές όπως το ξυπνητήρι ή το ημερολόγιο έπειτα ώστε να αποφύγετε την απώλεια σημαντικών ειδοποιήσεων. Το πληκτρολόγιο ή ο εκκινητής ίσως επαναφερθούν στη σχετική εφαρμογή προεπιλογής.</string>
+    <string name="msg_appkill_warning">Η επιλεγμένη εγαρμογή(ές) θα λάβει το σήμα τερματισμού, και θα συνεχιστεί αφού η εργασία ολοκληρωθεί. Ελέγξτε τις επεξεργασμένες εφαρμογές σας έπειτα (και αποφύγετε να τις εκκινήσετε καθώς η διεργασία ακόμα τρέχει).</string>
     <string name="intro_permission_batteryoptimization">Η εφαρμογή μπορεί να αντιμετωπίσει κάποια προβλήματα πραγματοποιώντας προγραμματισμένες δημιουργίες αντιγράφων σε ορισμένες ROMs οι οποίες υιοθετούν δυναμικές βελτιστοποιήσεις κατανάλωσης μπαταρίας π.χ. MIUI, αλλά ακόμα και σε βασικό AOSP τέτοιο πρόβλημα μπορεί να συμβεί.</string>
     <string name="intro_permission_usageaccess">Η εφαρμογή χρειάζεται αυτήν την άδεια ώστε να μπορεί να ελέγχει τα στατιστικά στοιχεία και τα μεγέθη των δεδομένων και των μνημών cache των εφαρμογών.</string>
     <string name="intro_permission_storage_location">Η εφαρμογή χρειάζεται μία τοποθεσία αντιγράφων για την αποθήκευση των αντιράφων. Η εφαρμογή ίσως χρειαστεί μερικά gigabytes αποθηκευτικού χώρου για μία ολοκληρωμένη δημιουργία αντιγράφων και χρησιμοποιεί το σύστημα αρχείων πολύ. Παρακαλώ έχετε αυτό στο νου σας καθώς επιλέγετε τοποθεσίες αποθηκευτικού χώρου βασισμένες στο διαδίκτυο.</string>
@@ -186,7 +178,6 @@
     <string name="enable_encryption_title">Κρυπτογράφηση Δεδομένων</string>
     <string name="help_appTypeHint">* Το εικονίδιο του τύπου εφαρμογής είναι γκρι εάν η εφαρμογή είναι απεγκατεστημένη και σκούρο γκρι εάν η εφαρμογή είναι απενεργοποιημένη.</string>
     <string name="help_legend">Υπόμνημα:</string>
-    <string name="help_group">Η Ομάδα μας</string>
     <string name="cache_size">Μέγεθος μνήμης Cache:</string>
     <string name="data_size">Μέγεθος Δεδομένων:</string>
     <string name="app_size">Μέγεθος Έφαρμογης:</string>
@@ -198,7 +189,6 @@
     <string name="dialog_unlock">Ξεκλείδωμα</string>
     <string name="dialog_start">Πάμε!</string>
     <string name="dialogSave">Αποθήκευση</string>
-    <string name="sched_submode">Υπό-λειτουργία δημιουργίας αντιγράφου:</string>
     <string name="sched_add">Προσθήκη Προγράμματος</string>
     <string name="prefs_password_match_false">Οι κωδικοί δεν ταιριάζουν</string>
     <string name="prefs_password_match_true">Οι κωδικοί ταιριάζουν</string>
@@ -213,11 +203,77 @@
     <string name="prefs_advanced">Προηγμένες προτιμήσεις</string>
     <string name="prefs_housekeepingmoment_summary">Ρυθμίζει εάν η παλαιότερη εκδοχή διαγράφεται πριν ή μετά τη δημιουργία ενός νέου αντιγράφου ώστε να ελευθερώσει το χώρο του δίσκου που χρησιμοποιείται από το αντίγραφο.</string>
     <string name="prefs_housekeepingmoment">Χρόνος Καθαρισμού Εκδοχών</string>
-    <string name="prefs_housekeepingmoment_before">Πριν τη Δημιουργία Αντιγράφου</string>
-    <string name="prefs_housekeepingmoment_after">Μετά τη Δημιουργία Αντιγράφου</string>
+    <string name="prefs_housekeepingmoment_before">Πριν τη δημιουργία Αντιγράφου ασφαλείας</string>
+    <string name="prefs_housekeepingmoment_after">Μετά τη δημιουργία Αντιγράφου ασφαλείας</string>
     <string name="radio_obbdata">Δεδομένα OBB</string>
     <string name="radio_deviceprotecteddata">Προστατευμένα από τη Συσκευή Δεδομένα</string>
     <string name="radio_externaldata">Εξωτερικά Δεδομένα</string>
     <string name="logs_text_empty">Δεν υπάρχει τίποτα για προβολή!</string>
     <string name="delete_all_backups">Διαγραφή όλων των αντιγράφων</string>
+    <plurals name="days_left">
+        <item quantity="one">%d ημέρα,</item>
+        <item quantity="other">%d ημέρες,</item>
+    </plurals>
+    <string name="prefs_disableverification_summary">Απενεργοποιεί αυτήν την επιλογή προγραμματιστών κατά την επαναφορά εφαρμογών και την επανενεργοποιεί έπειτα. Λύνει το σφάλμα: INSTALL_FAILED_VERIFICATION_FAILURE.</string>
+    <string name="prefs_disableverification">Απενεργοποίηση Επαλήθευσης εφαρμογών μέσω USB</string>
+    <string name="stats_apps">Εφαρμογές</string>
+    <string name="stats_backups">Αντίγραφα</string>
+    <string name="stats_updated">Ενημερωμένα</string>
+    <string name="radio_launchable">Εκκινήσιμες Εφαρμογές</string>
+    <string name="help_issues">Γνωστά προβλήματα</string>
+    <string name="fetching_action_list">Απόκτηση λίστας εφαρμογών για %1$s…</string>
+    <string name="prefs_obbdata_summary">Δημιουργεί αντίγραφο κι επαναφέρει τα αρχεία obb της εφαρμογής τα οποία είναι τοποθετημένα στον εξωτερικό αποθηκευτικό χώρο (π.χ. /storage/emulated/0/Android/obb)</string>
+    <string name="prefs_obbdata">Αντίγραφο αρχείων</string>
+    <string name="prefs_allowdowngrade">Να επιτρέπεται η υποβάθμιση</string>
+    <string name="prefs_allowdowngrade_summary">Να επιτρέπεται η επαναφορά παλαιότερης έκδοσης της εγκατεστημένης εφαρμογής.</string>
+    <string name="prefs_restoreallpermissions">Επαναφορά με όλες τις άδειες</string>
+    <string name="prefs_restoreallpermissions_summary">Παραχώρηση όλων των αδειών στην επαναφερθείσα εφαρμογή.</string>
+    <string name="prefs_unset">Αποτυχία ορισμού</string>
+    <string name="help_faq">Συχνές Ερωτήσεις</string>
+    <string name="main">Κυρίως</string>
+    <plurals name="updated_apps">
+        <item quantity="one">%d ενημερωμένη εφαρμογή</item>
+        <item quantity="other">%d ενημερωμένες εφαρμογές</item>
+    </plurals>
+    <string name="app_info">Πληροφορίες εφαρμογής</string>
+    <string name="launch_app">Εκκίνηση εφαρμογής</string>
+    <string name="exodus_report">Αναφορά exodus</string>
+    <string name="clear_cache">Καθαρισμός cache</string>
+    <string name="usage_notes_title">Σημειώσεις Χρήσης</string>
+    <string name="help">Βοήθεια</string>
+    <string name="filtered_list">Φιλτραρισμένη λίστα</string>
+    <string name="copyOwnApkSuccess">Το APK της εφαρμογής αντιγράφηκε στο φάκελο αντιγράφων</string>
+    <string name="copyOwnApkFailed">Αποτυχία αντιγραφής του APK της εφαρμογής στο φάκελο αντιγράφων</string>
+    <string name="forceKillMessage">Θέλετε σίγουρα να τερματίσετε αναγκαστικά την εφαρμογή;</string>
+    <string name="sched_name">Όνομα:</string>
+    <string name="prefs_saveappslist_summary">Εγγράφει τη λίστα εφαρμογών σε ένα αρχείο txt στον φάκελο αντιγράφων του χρήστη</string>
+    <string name="prefs_saveappslist">Αποθήκευση λίστας εφαρμογών</string>
+    <string name="prefs_enablespecial_summary">Ακόμα χρειάζεται εντατική δοκιμή, δοκιμάστε γνωρίζοντας τον κίνδυνο πως μπορεί να προκαλέσει βρόχο εκκίνησης. Η ανατροφοδότηση είναι πάντα καλοδεχούμενη.</string>
+    <string name="prefs_devicelock_summary">Ασφαλίστε την εφαρμογή με τα διαπιστευτήρια της συσκευής</string>
+    <string name="prefs_devicelock">Κλείδωμα συσκευής</string>
+    <string name="sortAscDesc">Αύξουσα-Φθίνουσα ταξινόμηση</string>
+    <string name="intro_permission_storage_location_warning">Μην επιλέξετε τον φάκελο του κυρίως χώρου ή τον φάκελο Downloads, δημιουργήστε έναν φάκελο μόνο για τα αντίγραφά σας. Περισσότερα σχετικά με αυτό στο FAQ</string>
+    <plurals name="sched_interval_formal">
+        <item quantity="one">κάθε μέρα</item>
+        <item quantity="other">κάθε %d μέρες</item>
+    </plurals>
+    <string name="global_blocklist_add">Προσθήκη στη γενική λίστα μπλοκαρίσματος</string>
+    <string name="forceKill">Αναγκαστικός τερματισμός</string>
+    <string name="logs_share_failed">Το αρχείο καταγραφής δε βρέθηκε</string>
+    <string name="sched_imported">Το πρόγραμμα εισήχθη επιτυχώς</string>
+    <string name="sched_exported">Τα προγράμματα εξήχθησαν επιτυχώς</string>
+    <string name="error_datachanged">Τα δεδομένα της εφαρμογής μετεβλήθησαν ενεργά κατά τη διάρκεια της δημιουργίας αντιγράφου. Δοκιμάστε να τερματίσετε τις διαδικασίες της πριν τη δημιουργία αντιγράφου</string>
+    <string name="dialog_import">Εισαγωγή</string>
+    <string name="dialog_export">Εξαγωγή</string>
+    <string name="schedule_failed">Η εκτέλεση του προγράμματος απέτυχε</string>
+    <string name="shell_initproblem">Αδυναμία εκκίνησης του διαχειριστή shell. Είτε απουσιάζει το toybox/busybox είτε η άδεια root είναι απενεργοποιημένη για την εφαρμογή.</string>
+    <string name="no_file_manager_message">Δεν υπάρχει διαχειριστής αρχείων για να διαχειριστεί το SAF. Ίσως έχετε απενεργοποιήσει τον προεγκατεστημένο διαχειριστή αρχείων. Παρακαλώ επαναφέρτε τον ή επανενεργοποιήστε τον.</string>
+    <string name="no_file_manager_title">Απουσία διαχειριστή SAF</string>
+    <string name="prefs_schedulesexportimport_summary">Εξάγει ή εισάγει τη λίστα των προγραμμάτων που έχετε δημιουργήσει.</string>
+    <string name="prefs_schedulesexportimport">Εξαγωγή/εισαγωγή προγραμμάτων</string>
+    <string name="write_apps_list_all">Εγγράφηκε το αρχείο της λίστας όλων των εφαρμογών</string>
+    <string name="write_apps_list_filtered">Εγγράφηκε το αρχείο της λίστας φιλτραρισμένων εφαρμογών</string>
+    <string name="wait_noappslist">Η λίστα εφαρμογών δεν έχει αποκτηθεί ακόμα. Περιμένετε…</string>
+    <string name="help_group_matrix">Η Ομάδα μας στο Matrix</string>
+    <string name="help_group_telegram">Η Ομάδα μας στο Telegram</string>
 </resources>

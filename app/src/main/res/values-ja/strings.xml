@@ -11,8 +11,6 @@
     <string name="radio_data">データ</string>
     <string name="radio_both">apk + データ</string>
     <string name="de_selectAll">すべて選択/解除</string>
-    <string name="onlyApkBackedUp">apk のみ</string>
-    <string name="onlyDataBackedUp">データのみ</string>
     <string name="refresh">リフレッシュ</string>
     <string name="batchbackup">バッチ バックアップ</string>
     <string name="batchrestore">バッチ復元</string>
@@ -41,9 +39,7 @@
     <string name="dialogYes">はい</string>
     <string name="dialogNo">いいえ</string>
     <string name="restoreDataWithoutApkError">apkを復元しないとデータは復元できません。パッケージがインストールされていません。</string>
-    <string name="collectingData">パッケージ情報の収集中…</string>
     <string name="noSu">スーパーユーザーのアクセス許可を取得できませんでした</string>
-    <string name="busyboxProblem">BusyBox が見つかりませんでした。エラーログを確認してください</string>
     <!--mkfileError: an error occured while creating a file. format: string + " " + filename-->
     <string name="mkfileError">作成できませんでした</string>
     <!--fallbackToDefault: indicates a fallback to the default for creation of a specific file. used in the same way as mkfileError-->
@@ -63,8 +59,6 @@
     <string name="uninstallFailure">アンインストール中にエラー</string>
     <string name="errorDialogTitle">エラーが発生しました</string>
     <string name="customListTitle">カスタムリスト</string>
-    <string name="prefs_quickreboot">クイック再起動</string>
-    <string name="quickRebootMessage">ユーザースペースを再起動しますか?</string>
     <string name="notInstalledModeDataWarning">apkがないためバックアップからアプリを復元できません</string>
     <string name="shareTitle">共有</string>
     <string name="prefs_tools">ツール</string>
@@ -92,7 +86,7 @@
     <string name="prefs_language_system">システムデフォルト</string>
     <string name="prefs_rememberfiltering">並び替えとフィルターを記憶</string>
     <string name="prefs_rememberfiltering_summary">選択した並び替えやフィルター方法を保存します。メニューのチェックボックスでマークされたもののみ考慮されます。</string>
-    <string name="prefs_enableSpecialBackups">特別バックアップを有効にする</string>
+    <string name="prefs_enablespecial">特別バックアップを有効にする</string>
     <string name="sched_title">スケジューリング</string>
     <string name="sched_notificationMessage">バックアップがスケジュールされました</string>
     <string name="sched_interval">間隔の日数:</string>
@@ -102,7 +96,6 @@
     <string name="sched_startingbackup">スケジュールされたバックアップを開始中…</string>
     <string name="sched_mode">バックアップ モード:</string>
     <string name="sched_timeLeft">次回のバックアップまでの時間:</string>
-    <string name="sched_customListUpdateButton">カスタムリストを更新</string>
     <string name="sched_excludeSystemCheckBox">システムアプリを除外</string>
     <string name="spec_accounts">アカウント</string>
     <string name="spec_appwidgets">アプリケーショ ウィジェット</string>
@@ -112,4 +105,30 @@
     <string name="spec_wifiAccessPoints">Wifi アクセスポイント</string>
     <!--filebrowser_createDirectoryError: an error occured while trying to create the directory. format: string + " " + directory name-->
     <string name="help_license">ライセンス</string>
+    <string name="prefs_externaldata">外部データバックアップ</string>
+    <string name="prefs_excludecache_summary">バックアップデータからのアプリキャッシュを無視</string>
+    <string name="prefs_excludecache">アプリのキャッシュを無視</string>
+    <string name="prefs_password_match_false">パスワード不一致</string>
+    <string name="prefs_password_match_true">パスワード一致</string>
+    <string name="prefs_passwordconfirmation">暗号パスワードの確認</string>
+    <string name="prefs_password_summary">空による暗号の無効化</string>
+    <string name="prefs_password">暗号化パスワード</string>
+    <string name="prefs_encryption_summary">暗号データバックアップを有効にする</string>
+    <string name="prefs_encryption">暗号化</string>
+    <string name="prefs_biometriclock_summary">生態認証装置によるアプリで安全にしてください（例：指紋、顔認証）</string>
+    <string name="prefs_biometriclock">生態認証ロック</string>
+    <string name="prefs_theme_system">システムテーマ</string>
+    <string name="prefs_housekeepingmoment_before">バックアップ前</string>
+    <string name="prefs_housekeepingmoment_after">バックアップ後</string>
+    <string name="prefs_theme_dark">暗い</string>
+    <string name="prefs_theme_light">明るい</string>
+    <string name="radio_obbdata">OBB データ</string>
+    <string name="radio_system">システムアプリ</string>
+    <string name="radio_user">ユーザアプリ</string>
+    <string name="radio_deviceprotecteddata">デバイス保護データ</string>
+    <string name="radio_externaldata">外部データ</string>
+    <string name="radio_updated">更新済</string>
+    <string name="prefs_allowdowngrade">ダウングレードの許可</string>
+    <string name="prefs_restoreallpermissions">すべての権限を復元する</string>
+    <string name="prefs_externaldata_summary">外部ストレージ (例: /storage/emulated/0/Android/data/) に置かれたデータのバックアップとリストアを行います。</string>
 </resources>

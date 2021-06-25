@@ -20,40 +20,51 @@ package com.machiav3lli.backup.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.PowerManager
-import com.machiav3lli.backup.Constants
-import com.machiav3lli.backup.Constants.classAddress
-import com.machiav3lli.backup.Constants.classTag
+import com.machiav3lli.backup.*
 import com.machiav3lli.backup.databinding.ActivitySplashBinding
-import com.machiav3lli.backup.utils.PrefUtils
-import com.machiav3lli.backup.utils.UIUtils
+import com.machiav3lli.backup.utils.*
+import com.topjohnwu.superuser.Shell
 
 class SplashActivity : BaseActivity() {
-    private var binding: ActivitySplashBinding? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        UIUtils.setDayNightTheme(PrefUtils.getPrivateSharedPrefs(this).getString(Constants.PREFS_THEME, "system"))
-        super.onCreate(savedInstanceState)
-        binding = ActivitySplashBinding.inflate(layoutInflater)
-        setContentView(binding!!.root)
-        val prefs = PrefUtils.getPrivateSharedPrefs(this)
-        val powerManager = this.getSystemService(POWER_SERVICE) as PowerManager
-        val introIntent = Intent(applicationContext, IntroActivityX::class.java)
-        if (prefs.getBoolean(Constants.PREFS_FIRST_LAUNCH, true)) {
-            startActivity(introIntent)
-        } else if (PrefUtils.checkStoragePermissions(this) &&
-                PrefUtils.isStorageDirSetAndOk(this) &&
-                PrefUtils.checkUsageStatsPermission(this) &&
-                (prefs.getBoolean(Constants.PREFS_IGNORE_BATTERY_OPTIMIZATION, false)
-                        || powerManager.isIgnoringBatteryOptimizations(packageName))) {
-            introIntent.putExtra(classAddress(".fragmentNumber"), 3)
-            startActivity(introIntent)
-        } else {
-            introIntent.putExtra(classAddress(".fragmentNumber"), 2)
-            startActivity(introIntent)
-        }
-        overridePendingTransition(0, 0)
-    }
+    private lateinit var binding: ActivitySplashBinding
 
     companion object {
-        private val TAG = classTag(".SplashActivity")
+        init {
+            /*
+            * Shell.Config methods shall be called before any shell is created
+            * This is the why in this example we call it in a static block
+            * The followings are some examples, check Javadoc for more details
+            */
+            Shell.enableVerboseLogging = BuildConfig.DEBUG
+            Shell.setDefaultBuilder(Shell.Builder.create()
+                    .setTimeout(20))
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setDayNightTheme(getPrivateSharedPrefs().getString(PREFS_THEME, "system"))
+        super.onCreate(savedInstanceState)
+        Shell.getShell {
+            binding = ActivitySplashBinding.inflate(layoutInflater)
+            setContentView(binding.root)
+            val prefs = getPrivateSharedPrefs()
+            val powerManager = this.getSystemService(POWER_SERVICE) as PowerManager
+            val introIntent = Intent(applicationContext, IntroActivityX::class.java)
+            if (prefs.getBoolean(PREFS_FIRST_LAUNCH, true)) {
+                startActivity(introIntent)
+            } else if (hasStoragePermissions &&
+                    isStorageDirSetAndOk &&
+                    checkUsageStatsPermission &&
+                    (prefs.getBoolean(PREFS_IGNORE_BATTERY_OPTIMIZATION, false)
+                            || powerManager.isIgnoringBatteryOptimizations(packageName))) {
+                introIntent.putExtra(classAddress(".fragmentNumber"), 3)
+                startActivity(introIntent)
+            } else {
+                introIntent.putExtra(classAddress(".fragmentNumber"), 2)
+                startActivity(introIntent)
+            }
+            overridePendingTransition(0, 0)
+            finish()
+        }
     }
 }

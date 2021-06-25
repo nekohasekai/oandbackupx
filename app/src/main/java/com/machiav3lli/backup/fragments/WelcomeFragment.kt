@@ -25,16 +25,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.machiav3lli.backup.Constants
-import com.machiav3lli.backup.Constants.classTag
+import com.machiav3lli.backup.*
 import com.machiav3lli.backup.databinding.FragmentWelcomeBinding
 
 class WelcomeFragment : Fragment() {
-    private var binding: FragmentWelcomeBinding? = null
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private lateinit var binding: FragmentWelcomeBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         super.onCreate(savedInstanceState)
         binding = FragmentWelcomeBinding.inflate(inflater, container, false)
-        return binding!!.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,26 +47,33 @@ class WelcomeFragment : Fragment() {
         setupOnClicks()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
-    }
-
     private fun setupOnClicks() {
-        binding!!.changelog.setOnClickListener { requireContext().startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.HELP_CHANGELOG))) }
-        binding!!.telegram.setOnClickListener { requireContext().startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.HELP_TELEGRAM))) }
-        binding!!.element.setOnClickListener { requireContext().startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.HELP_ELEMENT))) }
-        binding!!.license.setOnClickListener { requireContext().startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.HELP_LICENSE))) }
+        binding.changelog.setOnClickListener {
+            requireContext().startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(HELP_CHANGELOG)))
+        }
+        binding.telegram.setOnClickListener {
+            requireContext().startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(HELP_TELEGRAM)))
+        }
+        binding.element.setOnClickListener {
+            requireContext().startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(HELP_ELEMENT)))
+        }
+        binding.license.setOnClickListener {
+            requireContext().startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(HELP_LICENSE)))
+        }
+        binding.issues.setOnClickListener {
+            requireContext().startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(HELP_ISSUES)))
+        }
+        binding.faq.setOnClickListener {
+            requireContext().startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(HELP_FAQ)))
+        }
     }
 
     private fun setupViews() {
         try {
-            binding!!.versionName.text = requireActivity().packageManager.getPackageInfo(requireActivity().packageName, 0).versionName
+            binding.versionName.text = requireActivity().packageManager
+                .getPackageInfo(requireActivity().packageName, 0)
+                .versionName
         } catch (ignored: PackageManager.NameNotFoundException) {
         }
-    }
-
-    companion object {
-        private val TAG = classTag(".WelcomeFragment")
     }
 }

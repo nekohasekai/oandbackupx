@@ -19,34 +19,13 @@ package com.machiav3lli.backup.utils
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.documentfile.provider.DocumentFile
-import com.machiav3lli.backup.Constants.classTag
-import com.machiav3lli.backup.utils.PrefUtils.StorageLocationNotConfiguredException
-import com.machiav3lli.backup.utils.PrefUtils.getStorageRootDir
-import java.io.*
-import java.nio.charset.StandardCharsets
+import java.io.File
 import java.nio.file.attribute.PosixFilePermission
+import java.nio.file.attribute.PosixFilePermissions
 
 object FileUtils {
-    const val BACKUP_SUBDIR_NAME = "OABackupX"
-    const val LOG_FILE_NAME = "OAndBackupX.log"
     private var backupLocation: Uri? = null
-    private val TAG = classTag(".FileUtils")
-
-    @Throws(FileNotFoundException::class)
-    fun openFileForReading(context: Context, uri: Uri?): BufferedReader {
-        return BufferedReader(
-                InputStreamReader(context.contentResolver.openInputStream(uri!!), StandardCharsets.UTF_8)
-        )
-    }
-
-    @Throws(FileNotFoundException::class)
-    fun openFileForWriting(context: Context, uri: Uri?, mode: String?): BufferedWriter {
-        return BufferedWriter(
-                OutputStreamWriter(context.contentResolver.openOutputStream(uri!!, mode!!), StandardCharsets.UTF_8)
-        )
-    }
 
     // TODO Change to StorageFile-based
     fun getExternalStorageDirectory(context: Context): File {
@@ -54,32 +33,24 @@ object FileUtils {
     }
 
     /**
-     * Returns the backup directory URI. It's not the root path but the subdirectory, because
-     * user tend to just select their storage's root directory and expect the app to create a
-     * directory in it.
+     * Returns the backup directory URI. Users have to select it themselves to avoid SAF headache.
      *
      * @return URI to OABX storage directory
      */
     @Throws(StorageLocationNotConfiguredException::class, BackupLocationIsAccessibleException::class)
-    fun getBackupDir(context: Context?): Uri {
+    fun getBackupDirUri(context: Context): Uri {
         if (backupLocation == null) {
-            val storageRoot = getStorageRootDir(context!!)
-            if (storageRoot!!.isEmpty()) {
+            val storageRoot = context.backupDirPath
+            if (storageRoot.isEmpty()) {
                 throw StorageLocationNotConfiguredException()
             }
             val storageRootDoc = DocumentFile.fromTreeUri(context, Uri.parse(storageRoot))
             if (storageRootDoc == null || !storageRootDoc.exists()) {
                 throw BackupLocationIsAccessibleException("Cannot access the root location.")
             }
-            var backupLocationDoc = storageRootDoc.findFile(BACKUP_SUBDIR_NAME)
-            if (backupLocationDoc == null || !backupLocationDoc.exists()) {
-                Log.i(TAG, "Backup directory does not exist. Creating it")
-                backupLocationDoc = storageRootDoc.createDirectory(BACKUP_SUBDIR_NAME)
-            }
-            backupLocation = backupLocationDoc!!.uri
+            backupLocation = storageRootDoc.uri
         }
         return backupLocation as Uri
-
     }
 
     /**
@@ -96,18 +67,26 @@ object FileUtils {
         return path.substring(path.lastIndexOf(File.separator) + 1)
     }
 
-    fun translatePosixPermissionToMode(permission: Set<PosixFilePermission?>): Short {
+    fun translatePosixPermissionToMode(permissions: String): Int {
+        var str = permissions.takeLast(9)
+        str = str.replace('s', 'x', false)
+        str = str.replace('S', '-', false)
+        val set = PosixFilePermissions.fromString(str)
+        return translatePosixPermissionToMode(set)
+    }
+
+    fun translatePosixPermissionToMode(permissions: Set<PosixFilePermission?>): Int {
         var mode = 0
-        for (action in PosixFilePermission.values()) {
+        PosixFilePermission.values().forEach {
             mode = mode shl 1
-            mode += if (permission.contains(action)) 1 else 0
+            mode += if (permissions.contains(it)) 1 else 0
         }
-        return mode.toShort()
+        return mode
     }
 
     class BackupLocationIsAccessibleException : Exception {
-        constructor() : super() {}
-        constructor(message: String?) : super(message) {}
-        constructor(message: String?, cause: Throwable?) : super(message, cause) {}
+        constructor() : super()
+        constructor(message: String?) : super(message)
+        constructor(message: String?, cause: Throwable?) : super(message, cause)
     }
 }

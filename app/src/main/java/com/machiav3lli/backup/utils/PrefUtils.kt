@@ -20,157 +20,284 @@ package com.machiav3lli.backup.utils
 import android.Manifest
 import android.app.Activity
 import android.app.AppOpsManager
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.app.KeyguardManager
+import android.content.*
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.os.PowerManager
 import android.os.Process
 import android.provider.DocumentsContract
+import android.provider.Settings
+import androidx.activity.result.ActivityResultLauncher
 import androidx.biometric.BiometricManager
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
-import com.machiav3lli.backup.Constants
-import com.machiav3lli.backup.Constants.classTag
-import com.machiav3lli.backup.handler.Crypto
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
+import com.machiav3lli.backup.*
+import com.machiav3lli.backup.handler.ShellHandler
+import com.machiav3lli.backup.items.SortFilterModel
 import com.machiav3lli.backup.items.StorageFile
+import com.scottyab.rootbeer.RootBeer
 import java.nio.charset.StandardCharsets
 
-object PrefUtils {
-    private val TAG = classTag(".PrefUtils")
-    const val READ_PERMISSION = 2
-    const val WRITE_PERMISSION = 3
-    const val BACKUP_DIR = 5
+const val READ_PERMISSION = 2
+const val WRITE_PERMISSION = 3
 
-    fun getCryptoSalt(context: Context?): ByteArray {
-        val userSalt = getDefaultSharedPreferences(context).getString(Constants.PREFS_SALT, "")
-        return if (userSalt!!.isNotEmpty()) {
-            userSalt.toByteArray(StandardCharsets.UTF_8)
-        } else Crypto.FALLBACK_SALT
-    }
+fun Context.getDefaultSharedPreferences(): SharedPreferences =
+    PreferenceManager.getDefaultSharedPreferences(this)
 
-    fun isEncryptionEnabled(context: Context?): Boolean {
-        return !getDefaultSharedPreferences(context).getString(Constants.PREFS_PASSWORD, "")!!.isEmpty()
-    }
+fun Context.getPrivateSharedPrefs(): SharedPreferences {
+    val masterKey = MasterKey.Builder(this).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build()
+    return EncryptedSharedPreferences.create(
+        this,
+        PREFS_SHARED_PRIVATE,
+        masterKey,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+    )
+}
 
-    fun isLockEnabled(context: Context?): Boolean {
-        return getDefaultSharedPreferences(context).getBoolean(Constants.PREFS_BIOMETRICLOCK, false)
-    }
+fun Context.getCryptoSalt(): ByteArray {
+    val userSalt = getDefaultSharedPreferences().getString(PREFS_SALT, "")
+        ?: ""
+    return if (userSalt.isNotEmpty()) {
+        userSalt.toByteArray(StandardCharsets.UTF_8)
+    } else FALLBACK_SALT
+}
 
-    fun isBiometricLockAvailable(context: Context?): Boolean {
-        return BiometricManager.from(context!!).canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS
-    }
 
-    /**
-     * Returns the user selected location. Go for `FileUtil.getBackupDir` to get the actual
-     * backup dir's path
-     *
-     * @param context application context
-     * @return user configured location
-     * @throws StorageLocationNotConfiguredException if the value is not set
-     */
+fun Context.isEncryptionEnabled(): Boolean =
+    getPrivateSharedPrefs().getString(PREFS_PASSWORD, "")?.isNotEmpty()
+        ?: false
+
+fun Context.getEncryptionPassword(): String =
+    getPrivateSharedPrefs().getString(PREFS_PASSWORD, "")
+        ?: ""
+
+fun Context.setEncryptionPassword(value: String) =
+    getPrivateSharedPrefs().edit().putString(PREFS_PASSWORD, value).commit()
+
+fun Context.getEncryptionPasswordConfirmation(): String =
+    getPrivateSharedPrefs().getString(PREFS_PASSWORD_CONFIRMATION, "")
+        ?: ""
+
+fun Context.setEncryptionPasswordConfirmation(value: String) =
+    getPrivateSharedPrefs().edit().putString(PREFS_PASSWORD_CONFIRMATION, value).commit()
+
+fun Context.isDeviceLockEnabled(): Boolean =
+    getDefaultSharedPreferences().getBoolean(PREFS_DEVICELOCK, false)
+
+fun Context.isDeviceLockAvailable(): Boolean =
+    (getSystemService(KeyguardManager::class.java) as KeyguardManager).isDeviceSecure
+
+fun Context.isBiometricLockEnabled(): Boolean =
+    getDefaultSharedPreferences().getBoolean(PREFS_BIOMETRICLOCK, false)
+
+fun Context.isBiometricLockAvailable(): Boolean =
+    BiometricManager.from(this).canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK) ==
+            BiometricManager.BIOMETRIC_SUCCESS
+
+/**
+ * Returns the user selected location. Go for `FileUtil.getBackupDir` to get the actual
+ * backup dir's path
+ *
+ * @param context application context
+ * @return user configured location
+ * @throws StorageLocationNotConfiguredException if the value is not set
+ */
+val Context.backupDirPath: String
     @Throws(StorageLocationNotConfiguredException::class)
-    fun getStorageRootDir(context: Context): String? {
-        val location = getPrivateSharedPrefs(context).getString(Constants.PREFS_PATH_BACKUP_DIRECTORY, "")
-        if (location!!.isEmpty()) {
-            throw StorageLocationNotConfiguredException()
-        }
+    get() {
+        val location = getPrivateSharedPrefs().getString(PREFS_PATH_BACKUP_DIRECTORY, "")
+            ?: ""
+        if (location.isEmpty()) { throw StorageLocationNotConfiguredException() }
         return location
     }
 
-    fun setStorageRootDir(context: Context, value: Uri?) {
-        val fullUri = DocumentsContract.buildDocumentUriUsingTree(value, DocumentsContract.getTreeDocumentId(value))
-        getPrivateSharedPrefs(context)
-                .edit()
-                .putString(Constants.PREFS_PATH_BACKUP_DIRECTORY, fullUri.toString())
-                .apply()
-        FileUtils.invalidateBackupLocation()
-    }
+fun Context.setBackupDir(value: Uri) {
+    val fullUri = DocumentsContract
+        .buildDocumentUriUsingTree(value, DocumentsContract.getTreeDocumentId(value))
+    getPrivateSharedPrefs().edit()
+        .putString(PREFS_PATH_BACKUP_DIRECTORY, fullUri.toString()).apply()
+    FileUtils.invalidateBackupLocation()
+}
 
-    fun isStorageDirSetAndOk(context: Context): Boolean {
+val Context.isStorageDirSetAndOk: Boolean
+    get() {
         return try {
-            val storageDirPath = getStorageRootDir(context)
-            if (storageDirPath!!.isEmpty()) {
+            val storageDirPath = backupDirPath
+            if (storageDirPath.isEmpty()) {
                 return false
             }
-            val storageDir = StorageFile.fromUri(context, Uri.parse(storageDirPath))
+            val storageDir = StorageFile.fromUri(this, Uri.parse(storageDirPath))
             storageDir.exists()
         } catch (e: StorageLocationNotConfiguredException) {
             false
         }
     }
 
-    fun getDefaultSharedPreferences(context: Context?): SharedPreferences {
-        return PreferenceManager.getDefaultSharedPreferences(context)
-    }
-
-    fun getPrivateSharedPrefs(context: Context): SharedPreferences {
-        return context.getSharedPreferences(Constants.PREFS_SHARED_PRIVATE, Context.MODE_PRIVATE)
-    }
-
-    fun requireStorageLocation(fragment: Fragment) {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-                .addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
-                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-        fragment.startActivityForResult(intent, BACKUP_DIR)
-    }
-
-    fun checkStoragePermissions(context: Context): Boolean {
-        /* if (PrefUtils.STORAGE_MODE_R) {
-            return Environment.isExternalStorageManager();
-        } else {
-            return (context.checkSelfPermission(READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+fun Activity.requireStorageLocation(activityResultLauncher: ActivityResultLauncher<Intent>) {
+    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+        .addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        .addFlags(Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
+    try {
+        activityResultLauncher.launch(intent)
+    } catch (e: ActivityNotFoundException) {
+        showWarning(
+            getString(R.string.no_file_manager_title),
+            getString(R.string.no_file_manager_message)
+        ) { _: DialogInterface?, _: Int ->
+            finishAffinity()
         }
-         */
-        return context.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    }
+}
+
+val Context.hasStoragePermissions: Boolean
+    get() = when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ->
+            Environment.isExternalStorageManager()
+        else ->
+            checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_GRANTED
     }
 
-    fun getStoragePermission(activity: Activity) {
-        requireWriteStoragePermission(activity)
-        requireReadStoragePermission(activity)
+fun Activity.getStoragePermission() {
+    when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
+            val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+            intent.data = Uri.parse("package:$packageName")
+            startActivity(intent)
+        }
+        else -> {
+            requireWriteStoragePermission()
+            requireReadStoragePermission()
+        }
     }
+}
 
-    fun requireReadStoragePermission(activity: Activity) {
-        if (activity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), READ_PERMISSION)
+fun Activity.checkRootAccess(): Boolean {
+    val rootBeer = RootBeer(this)
+    if (!rootBeer.isRooted) {
+        showFatalUiWarning(getString(R.string.noSu))
+        return false
     }
-
-    fun requireWriteStoragePermission(activity: Activity) {
-        if (activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_PERMISSION)
+    try {
+        ShellHandler.runAsRoot("id")
+    } catch (e: ShellHandler.ShellCommandFailedException) {
+        showFatalUiWarning(getString(R.string.noSu))
+        return false
     }
+    return true
+}
 
-    fun canAccessExternalStorage(context: Context): Boolean {
-        val externalStorage = FileUtils.getExternalStorageDirectory(context)
+private fun Activity.requireReadStoragePermission() {
+    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) !=
+        PackageManager.PERMISSION_GRANTED
+    )
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), READ_PERMISSION
+        )
+}
+
+private fun Activity.requireWriteStoragePermission() {
+    if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+        PackageManager.PERMISSION_GRANTED
+    )
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_PERMISSION
+        )
+}
+
+val Context.canAccessExternalStorage: Boolean
+    get() {
+        val externalStorage = FileUtils.getExternalStorageDirectory(this)
         return externalStorage.canRead() && externalStorage.canWrite()
     }
 
-    fun checkUsageStatsPermission(context: Context): Boolean {
-        val appOps = (context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager)
+val Context.checkUsageStatsPermission: Boolean
+    get() {
+        val appOps = (getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager)
         val mode = when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> appOps.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.packageName)
-            else -> appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.packageName)
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ->
+                appOps.unsafeCheckOpNoThrow(
+                    AppOpsManager.OPSTR_GET_USAGE_STATS,
+                    Process.myUid(),
+                    packageName
+                )
+            else ->
+                appOps.checkOpNoThrow(
+                    AppOpsManager.OPSTR_GET_USAGE_STATS,
+                    Process.myUid(),
+                    packageName
+                )
         }
         return if (mode == AppOpsManager.MODE_DEFAULT) {
-            context.checkCallingOrSelfPermission(Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED
+            checkCallingOrSelfPermission(Manifest.permission.PACKAGE_USAGE_STATS) ==
+                    PackageManager.PERMISSION_GRANTED
         } else {
             mode == AppOpsManager.MODE_ALLOWED
         }
     }
 
-    fun checkBatteryOptimization(context: Context, prefs: SharedPreferences, powerManager: PowerManager): Boolean {
-        return prefs.getBoolean(Constants.PREFS_IGNORE_BATTERY_OPTIMIZATION, false) || powerManager.isIgnoringBatteryOptimizations(context.packageName)
+fun Context.checkBatteryOptimization(prefs: SharedPreferences, powerManager: PowerManager)
+        : Boolean = prefs.getBoolean(PREFS_IGNORE_BATTERY_OPTIMIZATION, false)
+        || powerManager.isIgnoringBatteryOptimizations(packageName)
+
+
+val Context.isBackupDeviceProtectedData: Boolean
+    get() = getDefaultSharedPreferences().getBoolean(PREFS_DEVICEPROTECTEDDATA, true)
+
+val Context.isBackupExternalData: Boolean
+    get() = getDefaultSharedPreferences().getBoolean(PREFS_EXTERNALDATA, false)
+
+val Context.isBackupObbData: Boolean
+    get() = getDefaultSharedPreferences().getBoolean(PREFS_OBBDATA, false)
+
+val Context.isKillBeforeActionEnabled: Boolean
+    get() = getDefaultSharedPreferences().getBoolean(PREFS_KILLBEFOREACTION, true)
+
+val Context.isDisableVerification: Boolean
+    get() = getDefaultSharedPreferences().getBoolean(PREFS_DISABLEVERIFICATION, true)
+
+val Context.isRestoreAllPermissions: Boolean
+    get() = getDefaultSharedPreferences().getBoolean(PREFS_RESTOREWITHALLPERMISSIONS, false)
+
+val Context.isAllowDowngrade: Boolean
+    get() = getDefaultSharedPreferences().getBoolean(PREFS_ALLOWDOWNGRADE, false)
+
+var Context.isNeedRefresh: Boolean
+    get() = getPrivateSharedPrefs().getBoolean(NEED_REFRESH, false)
+    set(value) {
+        getPrivateSharedPrefs().edit().putBoolean(NEED_REFRESH, value).apply()
     }
 
-    fun isKillBeforeActionEnabled(context: Context?): Boolean {
-        return getDefaultSharedPreferences(context).getBoolean(Constants.PREFS_KILLBEFOREACTION, false)
+var Context.sortFilterModel: SortFilterModel
+    get() {
+        val sortFilterModel: SortFilterModel
+        val sortFilterPref = getPrivateSharedPrefs().getString(PREFS_SORT_FILTER, "")
+        sortFilterModel =
+            if (!sortFilterPref.isNullOrEmpty()) SortFilterModel(sortFilterPref)
+            else SortFilterModel()
+        return sortFilterModel
     }
+    set(value) =
+        getPrivateSharedPrefs().edit().putString(PREFS_SORT_FILTER, value.toString()).apply()
 
-    fun isDisableVerification(context: Context?): Boolean {
-        return getDefaultSharedPreferences(context).getBoolean(Constants.PREFS_DISABLEVERIFICATION, false)
-    }
 
-    class StorageLocationNotConfiguredException : Exception("Storage Location has not been configured")
-}
+var Context.sortOrder: Boolean
+    get() =
+        getPrivateSharedPrefs().getBoolean(PREFS_SORT_ORDER, false)
+    set(value) =
+        getPrivateSharedPrefs().edit().putBoolean(PREFS_SORT_ORDER, value).apply()
+
+val Context.isRememberFiltering: Boolean
+    get() = getDefaultSharedPreferences().getBoolean(PREFS_REMEMBERFILTERING, true)
+
+class StorageLocationNotConfiguredException : Exception("Storage Location has not been configured")

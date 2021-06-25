@@ -1,14 +1,32 @@
+/*
+ * OAndBackupX: open-source apps backup and restore app.
+ * Copyright (C) 2020  Antonios Hazim
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package com.machiav3lli.backup.handler
 
 import android.content.Context
 import android.net.Uri
 import android.os.Build
-import com.machiav3lli.backup.Constants
+import com.machiav3lli.backup.BACKUP_DATE_TIME_FORMATTER
+import com.machiav3lli.backup.BACKUP_INSTANCE_DIR
 import com.machiav3lli.backup.items.AppMetaInfo
 import com.machiav3lli.backup.items.BackupItem
 import com.machiav3lli.backup.items.BackupProperties
 import com.machiav3lli.backup.items.StorageFile
-import com.machiav3lli.backup.utils.DocumentUtils.ensureDirectory
+import com.machiav3lli.backup.utils.ensureDirectory
 import java.time.LocalDateTime
 
 class BackupBuilder(private val context: Context, private val appInfo: AppMetaInfo, backupRoot: Uri) {
@@ -23,9 +41,9 @@ class BackupBuilder(private val context: Context, private val appInfo: AppMetaIn
     val backupPath = ensureBackupPath(backupRoot)
 
     private fun ensureBackupPath(backupRoot: Uri): StorageFile? {
-        val dateTimeStr = Constants.BACKUP_DATE_TIME_FORMATTER.format(backupDate)
+        val dateTimeStr = BACKUP_DATE_TIME_FORMATTER.format(backupDate)
         // root/packageName/dateTimeStr-user.userId/
-        return ensureDirectory(StorageFile.fromUri(context, backupRoot), String.format(BackupProperties.BACKUP_INSTANCE_DIR, dateTimeStr, appInfo.profileId))
+        return StorageFile.fromUri(context, backupRoot).ensureDirectory(String.format(BACKUP_INSTANCE_DIR, dateTimeStr, appInfo.profileId))
     }
 
     fun setHasApk(hasApk: Boolean) {
@@ -54,14 +72,13 @@ class BackupBuilder(private val context: Context, private val appInfo: AppMetaIn
 
     fun createBackupItem(): BackupItem {
         return BackupItem(
-                BackupProperties(backupPath!!.uri, appInfo, backupDate, hasApk, hasAppData,
-                        hasDevicesProtectedData, hasExternalData, hasObbData, cipherType, cpuArch),
-                backupPath)
+                BackupProperties(appInfo, backupDate, hasApk, hasAppData, hasDevicesProtectedData,
+                        hasExternalData, hasObbData, cipherType, cpuArch),
+                backupPath!!)
     }
 
     fun createBackupProperties(): BackupProperties {
-        return BackupProperties(backupPath!!.uri,
-                appInfo, backupDate, hasApk, hasAppData, hasDevicesProtectedData, hasExternalData,
-                hasObbData, cipherType, cpuArch)
+        return BackupProperties(appInfo, backupDate, hasApk, hasAppData, hasDevicesProtectedData,
+                hasExternalData, hasObbData, cipherType, cpuArch)
     }
 }

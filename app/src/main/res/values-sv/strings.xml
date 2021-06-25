@@ -11,8 +11,6 @@
     <string name="radio_data">data</string>
     <string name="radio_both">apk + data</string>
     <string name="de_selectAll">av/markera alla</string>
-    <string name="onlyApkBackedUp">endast apk</string>
-    <string name="onlyDataBackedUp">endast data</string>
     <string name="refresh">uppdatera</string>
     <string name="batchbackup">säkerhetskopiera flera</string>
     <string name="batchrestore">återställ flera</string>
@@ -41,9 +39,7 @@
     <string name="dialogYes">ja</string>
     <string name="dialogNo">nej</string>
     <string name="restoreDataWithoutApkError">det går inte att återställa data utan att återställa apk, paketet är inte installerat.</string>
-    <string name="collectingData">samlar in paketinfo…</string>
     <string name="noSu">kunde inte få superuser-behörighet</string>
-    <string name="busyboxProblem">kunde inte hitta busybox, titta i felloggen</string>
     <!--mkfileError: an error occured while creating a file. format: string + " " + filename-->
     <string name="mkfileError">kunde inte skapa</string>
     <!--fallbackToDefault: indicates a fallback to the default for creation of a specific file. used in the same way as mkfileError-->
@@ -63,8 +59,6 @@
     <string name="uninstallFailure">fel vid avinstallationen</string>
     <string name="errorDialogTitle">fel uppstod</string>
     <string name="customListTitle">anpassad lista</string>
-    <string name="prefs_quickreboot">snabb omstart</string>
-    <string name="quickRebootMessage">vill du starta om användarrymden?</string>
     <string name="notInstalledModeDataWarning">appen kan inte återställas från en säkerhetskopia som saknar apk-filen</string>
     <string name="shareTitle">dela</string>
     <string name="prefs_tools">verktyg</string>
@@ -92,7 +86,7 @@
     <string name="prefs_language_system">systemstandard</string>
     <string name="prefs_rememberfiltering">kom ihåg sortering och filter</string>
     <string name="prefs_rememberfiltering_summary">sparar den valda sorterings- och filtreringsmetoden. endast de som markeras med en kryssruta i menyn beaktas.</string>
-    <string name="prefs_enableSpecialBackups">aktivera speciella säkerhetskopior</string>
+    <string name="prefs_enablespecial">aktivera speciella säkerhetskopior</string>
     <string name="sched_title">schemaläggning</string>
     <string name="sched_notificationMessage">schemalagd säkerhetskopiering</string>
     <string name="sched_interval">intervall i dagar:</string>
@@ -102,7 +96,6 @@
     <string name="sched_startingbackup">startar den schemalagda säkerhetskopieringen…</string>
     <string name="sched_mode">säkerhetskopieringsläge:</string>
     <string name="sched_timeLeft">timmar till nästa säkerhetskopiering:</string>
-    <string name="sched_customListUpdateButton">uppdatera anpassad lista</string>
     <string name="sched_excludeSystemCheckBox">uteslut system-appar</string>
     <string name="spec_accounts">Konton</string>
     <string name="spec_appwidgets">Applikations-widgeter</string>

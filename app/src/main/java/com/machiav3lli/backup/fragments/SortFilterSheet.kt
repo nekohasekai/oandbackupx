@@ -24,93 +24,101 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.google.android.material.R
+import androidx.core.view.children
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.ChipGroup
-import com.machiav3lli.backup.Constants
+import com.machiav3lli.backup.PREFS_ENABLESPECIALBACKUPS
 import com.machiav3lli.backup.activities.MainActivityX
 import com.machiav3lli.backup.databinding.SheetSortFilterBinding
-import com.machiav3lli.backup.handler.SortFilterManager.getFilterPreferences
-import com.machiav3lli.backup.handler.SortFilterManager.saveFilterPreferences
 import com.machiav3lli.backup.items.SortFilterModel
-import com.machiav3lli.backup.utils.PrefUtils.getDefaultSharedPreferences
+import com.machiav3lli.backup.utils.*
 
-class SortFilterSheet : BottomSheetDialogFragment {
-    var sortFilterModel: SortFilterModel
-    private var binding: SheetSortFilterBinding? = null
-
-    constructor() {
-        sortFilterModel = SortFilterModel()
-    }
-
-    constructor(sortFilterModel: SortFilterModel) {
-        this.sortFilterModel = sortFilterModel
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
-    }
+class SortFilterSheet(
+    private var mSortFilterModel: SortFilterModel = SortFilterModel(),
+    private val stats: Triple<Int, Int, Int>
+) :
+    BottomSheetDialogFragment() {
+    private lateinit var binding: SheetSortFilterBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val sheet = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
         sheet.setOnShowListener { d: DialogInterface ->
             val bottomSheetDialog = d as BottomSheetDialog
-            val bottomSheet = bottomSheetDialog.findViewById<FrameLayout>(R.id.design_bottom_sheet)
-            if (bottomSheet != null) BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
+            val bottomSheet =
+                bottomSheetDialog.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+            if (bottomSheet != null) BottomSheetBehavior.from(bottomSheet).state =
+                BottomSheetBehavior.STATE_EXPANDED
         }
         return sheet
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = SheetSortFilterBinding.inflate(inflater, container, false)
-        return binding!!.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mSortFilterModel = requireContext().sortFilterModel
         setupOnClicks()
         setupChips()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        sortFilterModel = getFilterPreferences(requireContext())
-    }
-
     private fun setupOnClicks() {
-        binding!!.dismiss.setOnClickListener { dismissAllowingStateLoss() }
-        binding!!.reset.setOnClickListener {
-            saveFilterPreferences(requireContext(), SortFilterModel("0000"))
-            requireMainActivity().cleanRefresh()
+        binding.dismiss.setOnClickListener { dismissAllowingStateLoss() }
+        binding.reset.setOnClickListener {
+            requireContext().sortFilterModel = SortFilterModel()
+            requireContext().sortOrder = false
+            requireMainActivity().refreshView()
             dismissAllowingStateLoss()
         }
-        binding!!.apply.setOnClickListener {
-            saveFilterPreferences(requireContext(), sortFilterModel)
-            requireMainActivity().cleanRefresh()
+        binding.apply.setOnClickListener {
+            requireContext().sortFilterModel = mSortFilterModel
+            requireContext().sortOrder = binding.sortAscDesc.isChecked
+            requireMainActivity().refreshView()
             dismissAllowingStateLoss()
         }
+        binding.appsNum.text = stats.first.toString()
+        binding.backupsNum.text = stats.second.toString()
+        binding.updatedNum.text = stats.third.toString()
     }
 
     private fun setupChips() {
-        binding!!.sortBy.check(sortFilterModel.sortById)
-        binding!!.sortBy.setOnCheckedChangeListener { _: ChipGroup?, checkedId: Int -> sortFilterModel.putSortBy(checkedId) }
-        binding!!.filters.check(sortFilterModel.filterId)
-        binding!!.filters.setOnCheckedChangeListener { _: ChipGroup?, checkedId: Int -> sortFilterModel.putFilter(checkedId) }
-        binding!!.backupFilters.check(sortFilterModel.backupFilterId)
-        binding!!.backupFilters.setOnCheckedChangeListener { _: ChipGroup?, checkedId: Int -> sortFilterModel.putBackupFilter(checkedId) }
-        binding!!.specialFilters.check(sortFilterModel.specialFilterId)
-        binding!!.specialFilters.setOnCheckedChangeListener { _: ChipGroup?, checkedId: Int -> sortFilterModel.putSpecialFilter(checkedId) }
-        if (getDefaultSharedPreferences(requireContext()).getBoolean(Constants.PREFS_ENABLESPECIALBACKUPS, false)) {
-            binding!!.showOnlySpecial.visibility = View.VISIBLE
+        binding.sortBy.check(mSortFilterModel.sortById)
+        binding.sortBy.setOnCheckedChangeListener { _: ChipGroup?, checkedId: Int ->
+            mSortFilterModel.putSortBy(checkedId)
+        }
+        binding.sortAscDesc.isChecked = requireContext().sortOrder
+        mSortFilterModel.filterIds.forEach { binding.filters.check(it) }
+        binding.filters.children.forEach {
+            it.setOnClickListener { view ->
+                mSortFilterModel.mainFilter = mSortFilterModel.mainFilter xor idToFilter(view.id)
+            }
+        }
+        mSortFilterModel.backupFilterIds.forEach { binding.backupFilters.check(it) }
+        binding.backupFilters.children.forEach {
+            it.setOnClickListener { view ->
+                mSortFilterModel.backupFilter = mSortFilterModel.backupFilter xor idToMode(view.id)
+            }
+        }
+        binding.specialFilters.check(specialFilterToId(mSortFilterModel.specialFilter))
+        binding.specialFilters.setOnCheckedChangeListener { _: ChipGroup?, checkedId: Int ->
+            mSortFilterModel.specialFilter = idToSpecialFilter(checkedId)
+        }
+        if (requireContext().getDefaultSharedPreferences()
+                .getBoolean(PREFS_ENABLESPECIALBACKUPS, false)
+        ) {
+            binding.filterSpecial.visibility = View.VISIBLE
         } else {
-            binding!!.showOnlySpecial.visibility = View.GONE
+            binding.filterSpecial.visibility = View.GONE
         }
     }
 
-    private fun requireMainActivity(): MainActivityX {
-        return super.requireActivity() as MainActivityX
-    }
+    private fun requireMainActivity(): MainActivityX = super.requireActivity() as MainActivityX
 }

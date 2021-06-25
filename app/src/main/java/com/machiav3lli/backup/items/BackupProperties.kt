@@ -1,3 +1,20 @@
+/*
+ * OAndBackupX: open-source apps backup and restore app.
+ * Copyright (C) 2020  Antonios Hazim
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package com.machiav3lli.backup.items
 
 import android.content.Context
@@ -7,6 +24,8 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.machiav3lli.backup.BACKUP_DATE_TIME_FORMATTER
+import com.machiav3lli.backup.BACKUP_INSTANCE_DIR
 import com.machiav3lli.backup.utils.GsonUtils.instance
 import java.time.LocalDateTime
 
@@ -18,23 +37,23 @@ open class BackupProperties : AppMetaInfo, Parcelable {
 
     @SerializedName("hasApk")
     @Expose
-    private val hasApk: Boolean
+    val hasApk: Boolean
 
     @SerializedName("hasAppData")
     @Expose
-    private val hasAppData: Boolean
+    val hasAppData: Boolean
 
     @SerializedName("hasDevicesProtectedData")
     @Expose
-    private val hasDevicesProtectedData: Boolean
+    val hasDevicesProtectedData: Boolean
 
     @SerializedName("hasExternalData")
     @Expose
-    private val hasExternalData: Boolean
+    val hasExternalData: Boolean
 
     @SerializedName("hasObbData")
     @Expose
-    private val hasObbData: Boolean
+    val hasObbData: Boolean
 
     @SerializedName("cipherType")
     @Expose
@@ -44,16 +63,23 @@ open class BackupProperties : AppMetaInfo, Parcelable {
     @Expose
     val cpuArch: String?
 
-    @SerializedName("backupLocation")
-    @Expose
-    var backupLocation: Uri
-        private set
+    fun getBackupLocation(appBackupDir: StorageFile?): Uri =
+        appBackupDir?.findFile(backupFolderName)?.uri
+            ?: Uri.EMPTY
 
-    constructor(backupLocation: Uri, context: Context?, pi: PackageInfo?, backupDate: LocalDateTime?,
-                hasApk: Boolean, hasAppData: Boolean, hasDevicesProtectedData: Boolean,
-                hasExternalData: Boolean, hasObbData: Boolean, cipherType: String?, cpuArch: String?)
-            : super(context!!, pi!!) {
-        this.backupLocation = backupLocation
+    private val backupFolderName
+        get() = String.format(
+            BACKUP_INSTANCE_DIR,
+            BACKUP_DATE_TIME_FORMATTER.format(backupDate),
+            profileId
+        )
+
+    constructor(
+        context: Context, pi: PackageInfo, backupDate: LocalDateTime?, hasApk: Boolean,
+        hasAppData: Boolean, hasDevicesProtectedData: Boolean, hasExternalData: Boolean,
+        hasObbData: Boolean, cipherType: String?, cpuArch: String?
+    )
+            : super(context, pi) {
         this.backupDate = backupDate
         this.hasApk = hasApk
         this.hasAppData = hasAppData
@@ -64,13 +90,15 @@ open class BackupProperties : AppMetaInfo, Parcelable {
         this.cpuArch = cpuArch
     }
 
-    constructor(backupLocation: Uri, base: AppMetaInfo, backupDate: LocalDateTime?,
-                hasApk: Boolean, hasAppData: Boolean, hasDevicesProtectedData: Boolean,
-                hasExternalData: Boolean, hasObbData: Boolean, cipherType: String?, cpuArch: String?)
-            : super(base.packageName, base.packageLabel, base.versionName,
-            base.versionCode, base.profileId, base.sourceDir,
-            base.splitSourceDirs, base.isSystem) {
-        this.backupLocation = backupLocation
+    constructor(
+        base: AppMetaInfo, backupDate: LocalDateTime?, hasApk: Boolean,
+        hasAppData: Boolean, hasDevicesProtectedData: Boolean, hasExternalData: Boolean,
+        hasObbData: Boolean, cipherType: String?, cpuArch: String?
+    ) : super(
+        base.packageName, base.packageLabel, base.versionName,
+        base.versionCode, base.profileId, base.sourceDir,
+        base.splitSourceDirs, base.isSystem
+    ) {
         this.backupDate = backupDate
         this.hasApk = hasApk
         this.hasAppData = hasAppData
@@ -81,12 +109,16 @@ open class BackupProperties : AppMetaInfo, Parcelable {
         this.cpuArch = cpuArch
     }
 
-    constructor(backupLocation: Uri, packageName: String?, packageLabel: String?, versionName: String?,
-                versionCode: Int, profileId: Int, sourceDir: String?, splitSourceDirs: Array<String>?,
-                isSystem: Boolean, backupDate: LocalDateTime?, hasApk: Boolean, hasAppData: Boolean,
-                hasDevicesProtectedData: Boolean, hasExternalData: Boolean, hasObbData: Boolean, cipherType: String?, cpuArch: String?)
-            : super(packageName, packageLabel, versionName, versionCode, profileId, sourceDir, splitSourceDirs, isSystem) {
-        this.backupLocation = backupLocation
+    constructor(
+        packageName: String?, packageLabel: String?, versionName: String?, versionCode: Int,
+        profileId: Int, sourceDir: String?, splitSourceDirs: Array<String>, isSystem: Boolean,
+        backupDate: LocalDateTime?, hasApk: Boolean, hasAppData: Boolean,
+        hasDevicesProtectedData: Boolean, hasExternalData: Boolean, hasObbData: Boolean,
+        cipherType: String?, cpuArch: String?
+    ) : super(
+        packageName, packageLabel, versionName, versionCode, profileId,
+        sourceDir, splitSourceDirs, isSystem
+    ) {
         this.backupDate = backupDate
         this.hasApk = hasApk
         this.hasAppData = hasAppData
@@ -98,7 +130,6 @@ open class BackupProperties : AppMetaInfo, Parcelable {
     }
 
     protected constructor(source: Parcel) {
-        backupLocation = source.readParcelable(Uri::class.java.classLoader)!!
         hasApk = source.readByte().toInt() != 0
         hasAppData = source.readByte().toInt() != 0
         hasDevicesProtectedData = source.readByte().toInt() != 0
@@ -109,7 +140,6 @@ open class BackupProperties : AppMetaInfo, Parcelable {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeParcelable(backupLocation, flags)
         parcel.writeByte((if (hasApk) 1 else 0).toByte())
         parcel.writeByte((if (hasAppData) 1 else 0).toByte())
         parcel.writeByte((if (hasDevicesProtectedData) 1 else 0).toByte())
@@ -127,31 +157,20 @@ open class BackupProperties : AppMetaInfo, Parcelable {
         return instance!!.toJson(this)
     }
 
-    fun hasApk(): Boolean {
-        return hasApk
-    }
-
-    fun hasAppData(): Boolean {
-        return hasAppData
-    }
-
-    fun hasDevicesProtectedData(): Boolean {
-        return hasDevicesProtectedData
-    }
-
-    fun hasExternalData(): Boolean {
-        return hasExternalData
-    }
-
-    fun hasObbData(): Boolean {
-        return hasObbData
-    }
-
     val isEncrypted: Boolean
         get() = cipherType != null && cipherType.isNotEmpty()
 
-    private fun setBackupLocation(backupLocation: Uri) {
-        this.backupLocation = backupLocation
+    override fun hashCode(): Int {
+        var hash = 7
+        hash = 31 * hash + backupDate.hashCode()
+        hash = 31 * hash + if (hasApk) 1 else 0
+        hash = 31 * hash + if (hasAppData) 1 else 0
+        hash = 31 * hash + if (hasDevicesProtectedData) 1 else 0
+        hash = 31 * hash + if (hasExternalData) 1 else 0
+        hash = 31 * hash + if (hasObbData) 1 else 0
+        hash = 31 * hash + cipherType.hashCode()
+        hash = 31 * hash + cpuArch.hashCode()
+        return hash
     }
 
     override fun toString(): String {
@@ -164,15 +183,12 @@ open class BackupProperties : AppMetaInfo, Parcelable {
                 ", hasObbData=" + hasObbData +
                 ", cipherType='" + cipherType + '\'' +
                 ", cpuArch='" + cpuArch + '\'' +
-                ", backupLocation=" + backupLocation +
                 '}'
     }
 
     companion object {
-        const val BACKUP_INSTANCE_PROPERTIES = "%s-user_%s.properties"
-        const val BACKUP_INSTANCE_DIR = "%s-user_%s"
-        val CREATOR: Parcelable.Creator<BackupProperties?> = object : Parcelable.Creator<BackupProperties?> {
-            override fun createFromParcel(source: Parcel): BackupProperties? {
+        val CREATOR = object : Parcelable.Creator<BackupProperties?> {
+            override fun createFromParcel(source: Parcel): BackupProperties {
                 return BackupProperties(source)
             }
 

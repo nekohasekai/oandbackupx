@@ -2,7 +2,7 @@
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](COC.md) [![Main CI Workflow](https://github.com/machiav3lli/oandbackupx/workflows/Main%20CI%20Workflow/badge.svg?branch=master)](https://github.com/machiav3lli/oandbackupx/actions?query=workflow%3A%22Main+CI+Workflow%22)
 
-OAndBackupX is a fork of the infamous OAndBackup with the aim to bring OAndBackup to 2020. For now most of the functionality and UI of the app are rewritten, next steps would be making it stable and adding some features which could ease the backup/restore workflow with any device. Therefore all types of contribution are welcome.
+OAndBackupX is a fork of the famous OAndBackup with the aim to bring OAndBackup to 2020. For now the app is already fully rewritten, coming up would be making it robust and adding some lengthily planned features which could ease the backup/restore workflow with any device. Therefore all types of contribution are always welcome.
 
 Now on functionality of our App:
 
@@ -10,6 +10,8 @@ Now on functionality of our App:
 * Both backup and restore of individual programs one at a time and batch backup and restore of multiple programs are supported.
 * Restoring system apps should be possible without requiring a reboot afterwards.
 * Backups can be scheduled with no limit on the number of individual schedules and there is the possibility of creating custom lists from the list of installed apps.
+
+And here's the project's [FAQ](FAQ.md).
 
 ## Installation
 
@@ -23,13 +25,13 @@ A combination with your favourite sync solution (e.g. Syncthing, Nextcloud...)  
 
 ## Community
 
-There's a new room on Matrix and a group on Telegram to discuss the development of the App and test new versions:
+In those groups we discuss the development of the App and test new versions:
 
-[OAndBackupX:Matrix.ORG](https://matrix.to/#/!PiXJUneYCnkWAjekqX:matrix.org?via=matrix.org)
+##### On Matrix: [OAndBackupX:Matrix.ORG](https://matrix.to/#/!PiXJUneYCnkWAjekqX:matrix.org?via=matrix.org)
 
-[t.me/OAndBackupX](https://t.me/OAndBackupX)
+##### On Telegram: [t.me/OAndBackupX](https://t.me/OAndBackupX)
 
-Our [Code of Conduct](COC.md) applies to the communication in the community same as for all contributers.
+Our **[Code of Conduct](COC.md)** applies to the communication in the community same as for all contributers.
 
 ## Encryption
 
@@ -37,33 +39,21 @@ If enabled the data backup will be encrypted with AES256 based on a password you
 
 ## Compatibility
 
+Version 5.0.0 uses new encryption, new databases, fixes most of reported bugs in 4.0.0 and boost the performance to something near the 3.2.0's. With that said, it's incompatible with the older versions.
+
 Version 4.0.0 marks a full overhaul of the app structure and thus breaks compatibility with previous versions.
 
 Till the version 0.9.3 there's been no structural change in how the app handles backup/restore. So you could use that version to restore the old backups, then move to the newest version and renew your backups so that they'll stay compatible as long as the logic of the app doesn't radically change.
 
 ## Changes & TODOs
 
-#### [Changelog](https://github.com/machiav3lli/oandbackupx/blob/master/changelog.md)
+#### [Changelog](changelog.md)  &  [Known Issues](ISSUES.md)
 
-- [x] Whole new UI and UX (Design improvement proposals are always welcome)
-- [x] Support for latest android versions
-- [x] Add Split Apk Support
-- [x] Modeling Sort/Filter and added some new filters
-- [x] Add App Info and Exodus Report shortcuts to AppSheet
-- [x] Add support for protected data, external data and obb backups
-- [x] Exclude cache from data backups
-- [x] Add in-app backup encryption
-- [x] Rewrite the logic of Backup/Restore
-- [x] Switch to Storage Access Framework
-- [ ] New android Scope Storage permissions compatibility (WIP)
-- [ ] Add a Flashable-ZIP feature
-- [ ] You suggest!...
+if you have some kotlin and android knowledge and like to contribute to the project, see the following **[development document](DEVDOC.md)** to see what is still need to be done, where a help could be needed or if you'd like to take on one of the fixes.
 
-#### if you have some java and android knowledge and like to contribute to the project see the following [development document](https://github.com/machiav3lli/oandbackupx/blob/master/DEVDOC.md) to see the goals and where a help is needed. Each contribution and communication in the project community should follow our [Code of Conduct](COC.md).
+The communication and each contribution in the project community should follow our **[Code of Conduct](COC.md)**.
 
 ## Screenshots
-
-### Dark Theme
 
 <p float="left">
  <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="170" />
@@ -72,22 +62,13 @@ Till the version 0.9.3 there's been no structural change in how the app handles 
  <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="170" />
 </p>
 
-### Light Theme
-
-<p float="left">
- <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="170" />
- <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="170" />
- <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="170" />
- <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/8.png" width="170" />
-</p>
-
 ## Building
 
 OAndBackupX is built with gradle, for that you need the android sdk.
 
 ## Licenses <img align="right" src="agplv3.png" width="64" />
 
-OAndBackupX is licensed under the [GNU's Aferro GPL v3](LICENSE.txt).
+OAndBackupX is licensed under the [GNU's Affero GPL v3](LICENSE.md).
 
 App's icon is based on an Icon made by [Catalin Fertu](https://www.flaticon.com/authors/catalin-fertu) from [www.flaticon.com](https://www.flaticon.com)
 
@@ -97,9 +78,9 @@ Placeholders icon foreground made by [Smashicons](https://www.flaticon.com/autho
 
 [Jens Stein](https://github.com/jensstein) for his unbelievably valuable work on OAndBackup.
 
-[Nils](https://github.com/Tiefkuehlpizze) & [Harald](https://github.com/hg42) for their active contribution to the project.
+[Nils](https://github.com/Tiefkuehlpizze), [Harald](https://github.com/hg42) and [Martin](https://github.com/Smojo) for their active contribution to the project.
 
-Features: Split-APK: [Tiefkuehlpizze](https://github.com/Tiefkuehlpizze), Rewrite Shellcommands [Tiefkuehlpizze](https://github.com/Tiefkuehlpizze).
+[Oliver Pepperell](https://github.com/opepp) for his contribution to the new anniversary design.
 
 Open-Source libs: [FastAdapter](https://github.com/mikepenz/FastAdapter), [RootBeer](https://github.com/scottyab/rootbeer), [NumberPicker](https://github.com/ShawnLin013/NumberPicker), [Apache Commons](https://commons.apache.org).
 

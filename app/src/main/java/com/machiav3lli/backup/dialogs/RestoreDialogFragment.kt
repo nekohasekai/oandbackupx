@@ -22,38 +22,65 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.machiav3lli.backup.ActionListener
-import com.machiav3lli.backup.R
+import com.machiav3lli.backup.*
 import com.machiav3lli.backup.handler.BackupRestoreHelper.ActionType
-import com.machiav3lli.backup.handler.action.BaseAppAction
-import com.machiav3lli.backup.items.AppMetaInfo
+import com.machiav3lli.backup.items.AppInfo
 import com.machiav3lli.backup.items.BackupProperties
 
-class RestoreDialogFragment(private val listener: ActionListener) : DialogFragment() {
+class RestoreDialogFragment(
+    val appInfo: AppInfo,
+    private val properties: BackupProperties,
+    private val listener: ActionListener
+) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val arguments = this.requireArguments()
-        val app = arguments.getParcelable<AppMetaInfo>("appinfo")
-        val isInstalled = arguments.getBoolean("isInstalled", false)
-        val properties = arguments.getParcelable<BackupProperties>("backup")
+        val labels = mutableListOf<String>()
+        var selectedMode = MODE_UNSET
+        val possibleModes = possibleSchedModes
 
-        val showApkBtn = properties!!.hasApk()
-        val showDataBtn = (isInstalled || app!!.isSpecial) && properties.hasAppData()
-        val showBothBtn = showApkBtn && properties.hasAppData()
-        val builder = AlertDialog.Builder(this.requireActivity())
-        builder.setTitle(app!!.packageLabel)
-        builder.setMessage(R.string.restore)
-        val actionType = ActionType.RESTORE
-        if (showApkBtn) {
-            builder.setNegativeButton(R.string.handleApk) { _: DialogInterface?, _: Int -> listener.onActionCalled(actionType, BaseAppAction.MODE_APK) }
+        if (properties.hasApk) {
+            labels.add(getString(R.string.radio_apk))
+        } else {
+            possibleModes.remove(MODE_APK)
         }
-        if (showDataBtn) {
-            builder.setNeutralButton(R.string.handleData) { _: DialogInterface?, _: Int -> listener.onActionCalled(actionType, BaseAppAction.MODE_DATA) }
+        if (properties.hasAppData) {
+            labels.add(getString(R.string.radio_data))
+        } else {
+            possibleModes.remove(MODE_DATA)
         }
-        if (showBothBtn) {
-            val textId = R.string.radio_both
-            builder.setPositiveButton(textId) { _: DialogInterface?, _: Int -> listener.onActionCalled(actionType, BaseAppAction.MODE_BOTH) }
+        if (properties.hasDevicesProtectedData) {
+            labels.add(getString(R.string.radio_deviceprotecteddata))
+        } else {
+            possibleModes.remove(MODE_DATA_DE)
         }
-        return builder.create()
+        if (properties.hasExternalData) {
+            labels.add(getString(R.string.radio_externaldata))
+        } else {
+            possibleModes.remove(MODE_DATA_EXT)
+        }
+        if (properties.hasObbData) {
+            labels.add(getString(R.string.radio_obbdata))
+        } else {
+            possibleModes.remove(MODE_DATA_OBB)
+        }
+
+        possibleModes.forEach { selectedMode = selectedMode or it }
+        val checkedOptions = BooleanArray(possibleModes.size)
+        checkedOptions.fill(true)
+
+        return AlertDialog.Builder(requireActivity())
+            .setTitle(appInfo.appMetaInfo.packageLabel)
+            .setMultiChoiceItems(
+                labels.toTypedArray<CharSequence>(),
+                checkedOptions
+            ) { _: DialogInterface?, index: Int, _: Boolean ->
+                selectedMode = selectedMode xor possibleModes[index]
+            }
+            .setPositiveButton(R.string.restore) { _: DialogInterface?, _: Int ->
+                if (selectedMode != MODE_UNSET)
+                    listener.onActionCalled(ActionType.RESTORE, selectedMode, properties)
+            }
+            .setNegativeButton(R.string.dialogCancel) { dialog: DialogInterface?, _: Int -> dialog?.cancel() }
+            .create()
     }
 }

@@ -19,92 +19,119 @@ package com.machiav3lli.backup
 
 import java.time.format.DateTimeFormatter
 
-object Constants {
-    const val TAG_BASE = "OAndBackupX"
-    const val PREFS_SHARED_PRIVATE = "com.machiav3lli.backup"
+const val PREFS_SHARED_PRIVATE = "com.machiav3lli.backup"
+const val EXPORTS_FOLDER_NAME = "EXPORTS"
+const val LOG_FOLDER_NAME = "LOGS"
 
-    const val BLACKLIST_ARGS_ID = "blacklistId"
-    const val BLACKLIST_ARGS_PACKAGES = "blacklistedPackages"
-    const val PREFS_SORT_FILTER = "sortFilter"
-    const val PREFS_FIRST_LAUNCH = "firstLaunch"
-    const val PREFS_IGNORE_BATTERY_OPTIMIZATION = "ignoreBatteryOptimization"
-    const val PREFS_SKIPPEDENCRYPTION = "skippedEncryptionCounter"
-    const val UTILBOX_PATH = "toybox"
+const val LOG_INSTANCE = "%s.log"
+const val BACKUP_INSTANCE_PROPERTIES = "%s-user_%s.properties"
+const val BACKUP_INSTANCE_DIR = "%s-user_%s"
+const val EXPORTS_INSTANCE = "%s.scheds"
 
-    const val PREFS_SCHEDULES = "schedules"
-    const val PREFS_SCHEDULES_TOTAL = "total"
-    const val PREFS_SCHEDULES_ENABLED = "enabled"
-    const val PREFS_SCHEDULES_TIMEHOUR = "hourTime"
-    const val PREFS_SCHEDULES_TIMEMINUTE = "minuteTime"
-    const val PREFS_SCHEDULES_INTERVAL = "repeatTime"
-    const val PREFS_SCHEDULES_TIMEPLACED = "timePlaced"
-    const val PREFS_SCHEDULES_MODE = "scheduleMode"
-    const val PREFS_SCHEDULES_SUBMODE = "scheduleSubMode"
-    const val PREFS_SCHEDULES_TIMEUNTILNEXTEVENT = "timeUntilNextEvent"
-    const val PREFS_SCHEDULES_EXCLUDESYSTEM = "excludeSystem"
-    const val PREFS_SCHEDULES_ENABLECUSTOMLIST = "enableCustomList"
-    const val PREFS_SCHEDULES_CUSTOMLIST = "customList"
+const val SCHEDULES_DB_NAME = "schedules.db"
+const val BLOCKLIST_DB_NAME = "blocklist.db"
+const val PACKAGES_LIST_GLOBAL_ID = -1L
 
-    const val PREFS_THEME = "themes"
-    const val PREFS_LANGUAGES = "languages"
-    const val PREFS_LANGUAGES_DEFAULT = "system"
-    const val PREFS_PATH_BACKUP_DIRECTORY = "pathBackupFolder"
-    const val PREFS_BIOMETRICLOCK = "biometricLock"
-    const val PREFS_OLDBACKUPS = "oldBackups"
-    const val PREFS_REMEMBERFILTERING = "rememberFiltering"
-    const val PREFS_ENCRYPTION = "encryption"
-    const val PREFS_PASSWORD = "password"
-    const val PREFS_PASSWORD_CONFIRMATION = "passwordConfirmation"
-    const val PREFS_ENABLESPECIALBACKUPS = "enableSpecialBackups"
-    const val PREFS_SALT = "salt"
-    const val PREFS_EXCLUDECACHE = "excludeCache"
-    const val PREFS_EXTERNALDATA = "backupExternalData"
-    const val PREFS_DEVICEPROTECTEDDATA = "backupDeviceProtectedData"
-    const val PREFS_NUM_BACKUP_REVISIONS = "numBackupRevisions"
-    const val PREFS_HOUSEKEEPING_MOMENT = "housekeepingMoment"
-    const val PREFS_DISABLEVERIFICATION = "disableVerification"
-    const val PREFS_KILLBEFOREACTION = "killBeforeAction"
-    const val PREFS_QUICK_REBOOT = "quickReboot"
-    const val PREFS_BATCH_DELETE = "batchDelete"
-    const val PREFS_LOGVIEWER = "logViewer"
+const val PREFS_SORT_FILTER = "sortFilter"
+const val PREFS_SORT_ORDER = "sortOrder"
+const val PREFS_FIRST_LAUNCH = "firstLaunch"
+const val PREFS_IGNORE_BATTERY_OPTIMIZATION = "ignoreBatteryOptimization"
+const val PREFS_SKIPPEDENCRYPTION = "skippedEncryptionCounter"
 
-    const val BUNDLE_USERS = "users"
+const val PREFS_THEME = "themes"
+const val PREFS_LANGUAGES = "languages"
+const val PREFS_LANGUAGES_DEFAULT = "system"
+const val PREFS_PATH_BACKUP_DIRECTORY = "pathBackupFolder"
+const val PREFS_DEVICELOCK = "deviceLock"
+const val PREFS_BIOMETRICLOCK = "biometricLock"
+const val PREFS_OLDBACKUPS = "oldBackups"
+const val PREFS_REMEMBERFILTERING = "rememberFiltering"
+const val PREFS_ENCRYPTION = "encryption"
+const val PREFS_PASSWORD = "password"
+const val PREFS_PASSWORD_CONFIRMATION = "passwordConfirmation"
+const val PREFS_ENABLESPECIALBACKUPS = "enableSpecialBackups"
+const val PREFS_SALT = "salt"
+const val PREFS_EXCLUDECACHE = "excludeCache"
+const val PREFS_EXTERNALDATA = "backupExternalData"
+const val PREFS_OBBDATA = "backupObbData"
+const val PREFS_DEVICEPROTECTEDDATA = "backupDeviceProtectedData"
+const val PREFS_NUM_BACKUP_REVISIONS = "numBackupRevisions"
+const val PREFS_HOUSEKEEPING_MOMENT = "housekeepingMoment"
+const val PREFS_DISABLEVERIFICATION = "disableVerification"
+const val PREFS_RESTOREWITHALLPERMISSIONS = "giveAllPermissions"
+const val PREFS_ALLOWDOWNGRADE = "allowDowngrade"
+const val PREFS_KILLBEFOREACTION = "killBeforeAction"
+const val PREFS_BATCH_DELETE = "batchDelete"
+const val PREFS_COPYSELF = "copySelfApk"
+const val PREFS_SCHEDULESEXPORTIMPORT = "schedulesExportImport"
+const val PREFS_SAVEAPPSLIST = "saveAppsList"
+const val PREFS_LOGVIEWER = "logViewer"
 
-    const val HELP_CHANGELOG = "https://github.com/machiav3lli/oandbackupx/blob/master/CHANGELOG.md"
-    const val HELP_TELEGRAM = "https://t.me/OAndBackupX"
-    const val HELP_ELEMENT = "https://matrix.to/#/!PiXJUneYCnkWAjekqX:matrix.org?via=matrix.org&via=chat.astafu.de&via=zerc.net"
-    const val HELP_LICENSE = "https://github.com/machiav3lli/oandbackupx/blob/master/LICENSE.md"
+const val ALT_MODE_UNSET = 0
+const val ALT_MODE_APK = 1
+const val ALT_MODE_DATA = 2
+const val ALT_MODE_BOTH = 3
 
-    val BACKUP_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")
+const val MODE_UNSET = 0b00000
+const val MODE_NONE = 0b100000
+const val MODE_APK = 0b010000
+const val MODE_DATA = 0b001000
+const val MODE_DATA_DE = 0b000100
+const val MODE_DATA_EXT = 0b000010
+const val MODE_DATA_OBB = 0b000001
+const val BACKUP_FILTER_DEFAULT = 0b111111
+val possibleSchedModes =
+    mutableListOf(MODE_APK, MODE_DATA, MODE_DATA_DE, MODE_DATA_EXT, MODE_DATA_OBB)
+val possibleBackupFilters =
+    mutableListOf(MODE_NONE, MODE_APK, MODE_DATA, MODE_DATA_DE, MODE_DATA_EXT, MODE_DATA_OBB)
 
-    fun classAddress(address: String): String {
-        return PREFS_SHARED_PRIVATE + address
-    }
+const val MAIN_SORT_LABEL = 0
+const val MAIN_SORT_PACKAGENAME = 1
+const val MAIN_SORT_DATASIZE = 2
 
-    fun customListAddress(index: Int): String {
-        return PREFS_SCHEDULES_CUSTOMLIST + index
-    }
+const val MAIN_FILTER_DEFAULT = 0b110
+const val MAIN_FILTER_UNSET = 0b000
+const val MAIN_FILTER_SYSTEM = 0b100
+const val MAIN_FILTER_USER = 0b010
+const val MAIN_FILTER_SPECIAL = 0b001
+val possibleMainFilters = mutableListOf(MAIN_FILTER_SYSTEM, MAIN_FILTER_USER, MAIN_FILTER_SPECIAL)
+val possibleSchedFilters = mutableListOf(MAIN_FILTER_SYSTEM, MAIN_FILTER_USER)
 
-    fun classTag(tag: String): String {
-        return TAG_BASE + tag
-    }
+const val SPECIAL_FILTER_ALL = 0
+const val SPECIAL_FILTER_LAUNCHABLE = 1
+const val SPECIAL_FILTER_NEW_UPDATED = 2
+const val SPECIAL_FILTER_OLD = 3
+const val SPECIAL_FILTER_NOT_INSTALLED = 4
 
-    fun exodusUrl(app: String): String {
-        return "https://reports.exodus-privacy.eu.org/reports/$app/latest"
-    }
+const val BUNDLE_USERS = "users"
+const val NEED_REFRESH = "needRefresh"
 
-    enum class HousekeepingMoment(val value: String) {
-        BEFORE("before"), AFTER("after");
+const val HELP_CHANGELOG = "https://github.com/machiav3lli/oandbackupx/blob/master/CHANGELOG.md"
+const val HELP_TELEGRAM = "https://t.me/OAndBackupX"
+const val HELP_ELEMENT =
+    "https://matrix.to/#/!PiXJUneYCnkWAjekqX:matrix.org?via=matrix.org&via=chat.astafu.de&via=zerc.net"
+const val HELP_LICENSE = "https://github.com/machiav3lli/oandbackupx/blob/master/LICENSE.md"
+const val HELP_ISSUES = "https://github.com/machiav3lli/oandbackupx/blob/master/ISSUES.md"
+const val HELP_FAQ = "https://github.com/machiav3lli/oandbackupx/blob/master/FAQ.md"
 
-        companion object {
-            fun fromString(value: String): HousekeepingMoment {
-                for (enumValue in values()) {
-                    if (enumValue.value == value) {
-                        return enumValue
-                    }
+val BACKUP_DATE_TIME_FORMATTER: DateTimeFormatter =
+    DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")
+
+fun classAddress(address: String): String = PREFS_SHARED_PRIVATE + address
+
+fun exodusUrl(app: String): String = "https://reports.exodus-privacy.eu.org/reports/$app/latest"
+
+enum class HousekeepingMoment(val value: String) {
+    BEFORE("before"), AFTER("after");
+
+    companion object {
+        fun fromString(value: String): HousekeepingMoment {
+            for (enumValue in values()) {
+                if (enumValue.value == value) {
+                    return enumValue
                 }
-                throw IllegalArgumentException("No constant with value '$value'")
             }
+            throw IllegalArgumentException("No constant with value '$value'")
         }
     }
 }
